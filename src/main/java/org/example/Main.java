@@ -13,7 +13,7 @@ public class Main {
        //Database Connection
         String url = "jdbc:mysql://localhost:3306/together_culture";
         String AdName = "tgcadmin";
-        String passKey = "tgcad1234";
+        String passKey = "1234tgc";  //retyped in the correct password
         //Call and instantiate the Together Culture Database
         connection TGCDB = new connection(url, AdName, passKey);
         TGCDB.getConnected();
