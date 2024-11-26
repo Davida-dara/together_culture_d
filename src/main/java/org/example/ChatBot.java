@@ -16,6 +16,7 @@ import static org.example.ExistingUser.userExistingEmail;
 import static org.example.SignupInterface.openWelcomePage;
 import static org.example.SignupInterface.setErrorText;
 public class ChatBot {
+//    i am here
     public class RoundedTextField extends JTextField{
         private int cornerRadius;
 
