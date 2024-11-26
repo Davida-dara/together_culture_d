@@ -18,12 +18,12 @@ public class Main {
         connection TGCDB = new connection(url, AdName, passKey);
         TGCDB.getConnected();
         TGCDB.getDisconnected();
-//        SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                showGUI();
-//
-//           }
-//        });
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                showGUI();
+
+           }
+        });
     }
 }
