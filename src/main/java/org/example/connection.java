@@ -25,7 +25,7 @@ public class connection {
             this.db = DriverManager.getConnection(dbUrl, adminName, adminPass);
 
             //Successsfull connection message
-            //System.out.println("Your Together Culture Database has been successfully connected!");
+            System.out.println("Your Together Culture Database has been successfully connected!");
             return true;
         }catch ( Exception e) {
             e.printStackTrace();
