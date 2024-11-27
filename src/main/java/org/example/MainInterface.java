@@ -61,7 +61,7 @@ public class MainInterface {
 
             //this panel will have all the components for the page
             JPanel mainPanel = new JPanel(new GridBagLayout()) {
-                Image backgroundImage = ImageIO.read(new File("/Users/gaiiaharb/Library/CloudStorage/OneDrive-AngliaRuskinUniversity/year2/OOP/TogetherCultureChatBot/src/main/java/org/example/background.png"));
+                Image backgroundImage = ImageIO.read(new File("/Users/gaiiaharb/Documents/GitHub/together_culture/src/main/java/org/example/background.png"));
 
                 //overriding the default background color
                 @Override
