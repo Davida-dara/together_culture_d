@@ -1,9 +1,7 @@
 package org.example;
 
 import java.security.spec.ECField;
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
+import java.sql.*;
 
 
 public class connection {
@@ -32,6 +30,29 @@ public class connection {
             //System.out.println("Oops...an error occured...could not connect your database...");
             return false;
         }
+    }
+
+    //method to Update/ edit the sql database sql commands
+    public void updateSql(String statement) {
+        try {
+            Statement sqlStat = this.db.createStatement();
+            sqlStat.executeUpdate(statement); //update the database with commands like CREATE, ALTER etc
+        }catch (Exception e) {
+            System.out.println("Could not execute sql command");
+        }
+    }
+
+    //method to execute sql query statements
+    public ResultSet ExecuteQuery(String statement) {
+        try {
+            Statement sqlStat = this.db.createStatement();
+            ResultSet rs = sqlStat.executeQuery(statement);
+            System.out.println("SQL statement executed successfully");
+            return rs;
+        } catch (Exception e) {
+            System.out.println("Could not execute the query statement. please rechek the statement");
+        }
+        return null;
     }
 
     //close and disconnect tgc database

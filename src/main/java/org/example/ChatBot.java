@@ -10,13 +10,35 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.alicebot.ab.Bot;
+import org.alicebot.ab.Chat;
 import org.example.MainInterface.RoundedButton; // Import RoundedButton
 
 import static org.example.ExistingUser.userExistingEmail;
 import static org.example.SignupInterface.openWelcomePage;
 import static org.example.SignupInterface.setErrorText;
 public class ChatBot {
-//    i am here
+    private Bot bot;
+
+    private static final String BOTNAME = "super";
+    private Chat chatSession;
+//    Loading AIML Files for chatbot conversations
+    public ChatBot() {
+        String botClassPath = "src/main/resources";
+        this.bot = new Bot(BOTNAME, botClassPath);
+        this.chatSession = new Chat(bot);
+        generateResponse(null);
+    }
+
+    //Testing conversation
+    public void generateResponse(String userInput) {
+        userInput = "I have a question";
+        if (this.chatSession != null) {
+        String response = chatSession.multisentenceRespond(userInput);
+        System.out.println("Bot: " + response);
+        } else System.out.println("chat is not properly initialized");
+    }
     public class RoundedTextField extends JTextField{
         private int cornerRadius;
 

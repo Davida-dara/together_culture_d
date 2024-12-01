@@ -55,6 +55,7 @@ public class MainInterface {
 
     public static void showGUI() {
         try {
+            ChatBot testing = new ChatBot();
             //this is the main frame for the interface
             JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -272,4 +273,6 @@ public class MainInterface {
         SignupInterface signupPage = new SignupInterface();
         signupPage.showSignup();
     }
+
+    //////Backend//////
 }
