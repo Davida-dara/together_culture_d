@@ -8,6 +8,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Paths;
 
 public class MainInterface {
     static class RoundedButton extends JButton {
@@ -54,6 +55,7 @@ public class MainInterface {
 
     public static void showGUI() {
         try {
+            ChatBot testing = new ChatBot();
             //this is the main frame for the interface
             JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,7 +63,9 @@ public class MainInterface {
 
             //this panel will have all the components for the page
             JPanel mainPanel = new JPanel(new GridBagLayout()) {
-                Image backgroundImage = ImageIO.read(new File("/Users/gaiiaharb/Documents/GitHub/together_culture/src/main/java/org/example/background.png"));
+                //get path of bckgrd img
+                String imgPath = Paths.get("src/main/java/org/example/", "background.png").toString();
+                Image backgroundImage = ImageIO.read(new File(imgPath));
 
                 //overriding the default background color
                 @Override
@@ -269,4 +273,6 @@ public class MainInterface {
         SignupInterface signupPage = new SignupInterface();
         signupPage.showSignup();
     }
+
+    //////Backend//////
 }
