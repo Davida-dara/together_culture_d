@@ -11,47 +11,47 @@ import java.net.URI;
 import java.nio.file.Paths;
 
 public class MainInterface {
-    static class RoundedButton extends JButton {
-        public RoundedButton(String label) {
-            super(label);
-            //makes the background transparent
-            setContentAreaFilled(false);
-            setBorderPainted(false);// Ensures no border is painted by default
-            setOpaque(false);// Ensures full transparency
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            Graphics2D g2 = (Graphics2D) g.create();
-
-            // Enable anti-aliasing for smoother corners
-            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            // Check if the button is pressed and set the color accordingly
-            if (getModel().isArmed()) {
-                g2.setColor(getBackground().darker());
-            } else {
-                g2.setColor(getBackground());
-            }
-
-            // Draw a rounded rectangle with specified corner arcs
-            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 50, 50);  // 30 is the arc width/height
-
-            // Set the color for the text
-            g2.setColor(getForeground());
-
-            // Center the text within the button
-            FontMetrics fm = g2.getFontMetrics();
-            int x = (getWidth() - fm.stringWidth(getText())) / 2;
-            int y = (getHeight() + fm.getAscent()) / 2 - 2;
-            g2.drawString(getText(), x, y);
-
-            // Dispose of the graphics object
-            g2.dispose();
-
-            super.paintComponent(g);
-        }
-    }
+//    static class RoundedButton extends JButton {
+//        public RoundedButton(String label) {
+//            super(label);
+//            //makes the background transparent
+//            setContentAreaFilled(false);
+//            setBorderPainted(false);// Ensures no border is painted by default
+//            setOpaque(false);// Ensures full transparency
+//        }
+//
+//        @Override
+//        protected void paintComponent(Graphics g) {
+//            Graphics2D g2 = (Graphics2D) g.create();
+//
+//            // Enable anti-aliasing for smoother corners
+//            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+//
+//            // Check if the button is pressed and set the color accordingly
+//            if (getModel().isArmed()) {
+//                g2.setColor(getBackground().darker());
+//            } else {
+//                g2.setColor(getBackground());
+//            }
+//
+//            // Draw a rounded rectangle with specified corner arcs
+//            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 50, 50);  // 30 is the arc width/height
+//
+//            // Set the color for the text
+//            g2.setColor(getForeground());
+//
+//            // Center the text within the button
+//            FontMetrics fm = g2.getFontMetrics();
+//            int x = (getWidth() - fm.stringWidth(getText())) / 2;
+//            int y = (getHeight() + fm.getAscent()) / 2 - 2;
+//            g2.drawString(getText(), x, y);
+//
+//            // Dispose of the graphics object
+//            g2.dispose();
+//
+//            super.paintComponent(g);
+//        }
+//    }
 
     public static void showGUI() {
         try {
@@ -168,10 +168,11 @@ public class MainInterface {
             welcomePanel.add(intro, gbcIntro);
 
             //creating the login button
-            RoundedButton logIn = new RoundedButton("Log in");
-            logIn.setBackground(new Color(72, 19, 38));
-            logIn.setForeground(Color.WHITE);
-            logIn.setPreferredSize(new Dimension(100, 30));
+//            RoundedButton logIn = new RoundedButton("Log in");
+//            logIn.setBackground(new Color(72, 19, 38));
+//            logIn.setForeground(Color.WHITE);
+//            logIn.setPreferredSize(new Dimension(100, 30));
+            RoundedButton logIn = createRoundedButton("Log in", new Color(72,19,38), Color.WHITE, new Dimension (100,30));
             //creating a new layout for thr log in button so I have independent control over its position
             GridBagConstraints gbcLogin = new GridBagConstraints();
             gbcLogin.insets = new Insets(5,5,5,5);
@@ -188,10 +189,11 @@ public class MainInterface {
                 }
             });
             //creating the signup button
-            RoundedButton signUp = new RoundedButton("Sign up");
-            signUp.setBackground(new Color(252, 242, 242));
-            signUp.setForeground(Color.BLACK);
-            signUp.setPreferredSize(new Dimension(100, 30));
+//            RoundedButton signUp = new RoundedButton("Sign up");
+//            signUp.setBackground(new Color(252, 242, 242));
+//            signUp.setForeground(Color.BLACK);
+//            signUp.setPreferredSize(new Dimension(100, 30));
+            RoundedButton signUp = createRoundedButton("Sign up", new Color(252, 242, 242), Color.BLACK, new Dimension(100,30));
             //creating a new layout for the signup to have full control over its position
             GridBagConstraints gbcSignUp = new GridBagConstraints();
             gbcSignUp.gridx = 0;
@@ -220,6 +222,7 @@ public class MainInterface {
             signedOut.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+                    openLoggedOut();
 
                 }
                 @Override
@@ -265,6 +268,14 @@ public class MainInterface {
 
 
     }
+    //method for styling the buttons
+    private static org.example.RoundedButton createRoundedButton(String text, Color bgColor, Color fgColor, Dimension size){
+        org.example.RoundedButton button = new org.example.RoundedButton(text);
+        button.setBackground(bgColor);
+        button.setForeground(fgColor);
+        button.setPreferredSize(size);
+        return button;
+    }
     public static void openLogIn() {
         LoginInterface loginPage = new LoginInterface();
         loginPage.showLogIn();
@@ -272,6 +283,10 @@ public class MainInterface {
     public static void openSignUp() {
         SignupInterface signupPage = new SignupInterface();
         signupPage.showSignup();
+    }
+    public static void openLoggedOut() {
+        StayLoggedOut loggedOut = new StayLoggedOut();
+        loggedOut.showStayLogOut();
     }
 
     //////Backend//////
