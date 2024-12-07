@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aiml>
+<category>
+<pattern>WHAT IS YOUR NAME</pattern>
+<template>Hi, I'm your Together Culture Chatbot.</template>
+</category>
+
+<!-- Setting the topics using condition statements-->
+<category>
+<pattern>* EVENTS *</pattern>
+<template>
+    <think><set name = "table">events</set></think>
+</template>
+</category>
+
+<topic name = "events">
+<category>
+<pattern>WHEN IS * HAPPENING</pattern>
+<template>
+    <think><set name = "eventname"><star /></set></think>
+    <star/> is happening tomorrow!
+</template>
+</category>
+</topic>
+
+</aiml>

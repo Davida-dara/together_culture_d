@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Scanner;
 
 import org.alicebot.ab.Bot;
 import org.alicebot.ab.Chat;
@@ -33,11 +34,15 @@ public class ChatBot {
 
     //Testing conversation
     public void generateResponse(String userInput) {
-        userInput = "I have a question";
-        if (this.chatSession != null) {
-        String response = chatSession.multisentenceRespond(userInput);
-        System.out.println("Bot: " + response);
-        } else System.out.println("chat is not properly initialized");
+        Scanner keyboard = new Scanner(System.in);
+        for (int i = 0; i < 3; i++) {
+            userInput = keyboard.nextLine();
+            // userInput = "I have a question";
+            if (this.chatSession != null) {
+                String response = chatSession.multisentenceRespond(userInput);
+                System.out.println("Bot: " + response);
+            } else System.out.println("chat is not properly initialized");
+        }
     }
     public class RoundedTextField extends JTextField{
         private int cornerRadius;

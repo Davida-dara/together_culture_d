@@ -1,0 +1,3 @@
+0,WHAT IS YOUR NAME,*,*,Hi#Comma I'm your Together Culture Chatbot.,tgc_rules.aiml
+0,* EVENTS *,*,*,<think><set name="table">events</set></think>,tgc_rules.aiml
+0,WHEN IS * HAPPENING,*,EVENTS,<think><set name="eventname"><star/></set></think>#Newline    <star/> is happening tomorrow!,tgc_rules.aiml
