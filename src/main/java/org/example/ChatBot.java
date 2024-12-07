@@ -13,7 +13,7 @@ import java.util.HashMap;
 
 import org.alicebot.ab.Bot;
 import org.alicebot.ab.Chat;
-import org.example.MainInterface.RoundedButton; // Import RoundedButton
+
 
 import static org.example.ExistingUser.userExistingEmail;
 import static org.example.SignupInterface.openWelcomePage;
