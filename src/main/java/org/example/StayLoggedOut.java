@@ -17,6 +17,101 @@ import org.example.RoundedTextField;
 
 
 public class StayLoggedOut {
+    public static class RoundedButton extends JButton {
+        private Color borderColor = new Color(72, 19, 38); // Default border color
+        private int borderThickness = 2; // Default border thickness
+        private int arcWidth = 30; // Default corner arc width
+        private int arcHeight = 30; // Default corner arc height
+
+        public RoundedButton(String label) {
+            super(label);
+            initializeButton();
+        }
+
+//        public RoundedButton(String label, Color background, Color foreground, Dimension size) {
+//            super(label);
+//            initializeButton();
+//            setBackground(background);
+//            setForeground(foreground);
+//            setPreferredSize(size);
+//        }
+
+        private void initializeButton() {
+            setContentAreaFilled(false);
+            setBorderPainted(false);
+            setOpaque(false);
+            setBackground(new Color(0, 0, 0, 0)); // Transparent by default
+        }
+
+        //method to reset border colour and repaint
+        public void updateBorderColor(Color newColor){
+            this.borderColor = newColor;
+            //repaint the button to reflect the changes
+            repaint();
+
+        }
+
+//        // Setters for border customization
+//        public void setBorderColor(Color color) {
+//            this.borderColor = color;
+//        }
+//
+//        public void setBorderThickness(int thickness) {
+//            this.borderThickness = thickness;
+//        }
+//
+//        public void setArcSize(int width, int height) {
+//            this.arcWidth = width;
+//            this.arcHeight = height;
+//        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+
+            // Enable anti-aliasing for smoother edges
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            // Check if the button is pressed or hovered
+            if (getModel().isPressed()) {
+                g2.setColor(getBackground().darker());
+            } else if (getModel().isRollover()) {
+                g2.setColor(getBackground().brighter());
+            } else {
+                g2.setColor(getBackground());
+            }
+
+            // Fill the rounded rectangle
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), arcWidth, arcHeight);
+
+            // Draw the text
+            g2.setColor(getForeground());
+            FontMetrics fm = g2.getFontMetrics();
+            int x = (getWidth() - fm.stringWidth(getText())) / 2;
+            int y = (getHeight() + fm.getAscent()) / 2 - 2;
+            g2.drawString(getText(), x, y);
+
+            g2.dispose();
+            super.paintComponent(g);
+        }
+
+        @Override
+        protected void paintBorder(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(borderColor); // Use the customizable border color
+            g2.setStroke(new BasicStroke(borderThickness)); // Set the border thickness
+            g2.drawRoundRect(
+                    borderThickness / 2,
+                    borderThickness / 2,
+                    getWidth() - borderThickness,
+                    getHeight() - borderThickness,
+                    arcWidth, arcHeight
+            );
+            g2.dispose();
+        }
+    }
+
 
     public static void showStayLogOut(){
         try{
@@ -150,8 +245,54 @@ public class StayLoggedOut {
             buttonPanel.setOpaque(false);// transparent background for the button panel
             //creating the buttons
             JButton eventsButton = createStyledButton("Upcoming Events");
-            JButton membershipButton = createStyledButton("Memberships");
+            eventsButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try{
+                    Desktop.getDesktop().browse(new URI("https://www.togetherculture.com/events"));
+                }catch (IOException | java.net.URISyntaxException ex){
+                    ex.printStackTrace();
+                }
+            }
+            @Override
+            public void mouseEntered(MouseEvent e){
+                logoPanel.setCursor(new Cursor(Cursor.HAND_CURSOR)); //changes cursor to hand when mouse hovered over the text
+            }
+        });
+
+
+        JButton membershipButton = createStyledButton("Memberships");
+            membershipButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    try{
+                        Desktop.getDesktop().browse(new URI("https://www.togetherculture.com/about-our-membership"));
+                    }catch (IOException | java.net.URISyntaxException ex){
+                        ex.printStackTrace();
+                    }
+                }
+                @Override
+                public void mouseEntered(MouseEvent e){
+                    logoPanel.setCursor(new Cursor(Cursor.HAND_CURSOR)); //changes cursor to hand when mouse hovered over the text
+                }
+            });
+
             JButton aboutButton = createStyledButton("About Us");
+            aboutButton.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    try{
+                        Desktop.getDesktop().browse(new URI("https://www.togetherculture.com/story-of-us"));
+                    }catch (IOException | java.net.URISyntaxException ex){
+                        ex.printStackTrace();
+                    }
+                }
+                @Override
+                public void mouseEntered(MouseEvent e){
+                    logoPanel.setCursor(new Cursor(Cursor.HAND_CURSOR)); //changes cursor to hand when mouse hovered over the text
+                }
+            });
+
             //adding the buttons to the buttonPanel
             buttonPanel.add(eventsButton);
             buttonPanel.add(aboutButton);
@@ -162,8 +303,7 @@ public class StayLoggedOut {
 
 
 
-           // mainPanel.setBackground(new Color(255, 134, 148));
-            //setting the size f the main panel
+            //setting the size of the main panel
             mainPanel.setPreferredSize(new Dimension(screenSize.width, screenSize.height));
 
             //adding the main panel to the frame for it to be visible
@@ -200,26 +340,39 @@ public class StayLoggedOut {
 
     }
 
-    private static JButton createStyledButton(String text) {
-        JButton button = new JButton(text);
+    static JButton createStyledButton(String text) {
+        RoundedButton button = new RoundedButton(text);
         button.setBackground(new Color(0,0,0,0));// transparent background
         button.setForeground(new Color(72,19,38));// text color
-        Border buttonBorder = BorderFactory.createLineBorder(new Color(72,19,38),2);
+        Border buttonBorder =BorderFactory.createLineBorder(new Color(72,19,38),2);
+        button.setBorder(buttonBorder); // set the border color
+        button.setFocusPainted(false); //removes the focus border
+        button.setPreferredSize(new Dimension(150, 30));
+        button.setBorder(BorderFactory.createLineBorder(new Color(72, 19, 38), 2));
         button.addMouseListener(new MouseAdapter() {
+
+
+
             private final Color hoverBackground = new Color(252, 73, 97);
             private final Color hoverForeground = Color.WHITE;
-            private final Color normalBackground = new Color(0,0,0,0);
+           // private final Color normalBackground = new Color(0,0,0,0);
             private final Color normalForeground = new Color(72,19,38);
+            private final Color normalBackground = new Color(0,0,0,0);
+            private final Color hoverbuttonBorder = new Color(252, 73, 97);
+            private final Color normalbuttonBorder =new Color(72,19,38);
             @Override
             public void mouseEntered(MouseEvent e) {
                 button.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 button.setBackground(hoverBackground);//changes the background colour
                 button.setForeground(hoverForeground);//changes the text colour
+                button.updateBorderColor(hoverbuttonBorder);
+
             }
             @Override
             public void mouseExited(MouseEvent e){
                 button.setForeground(normalForeground);//resets the text color
-                button.setBackground(normalBackground);// resets the background color
+                button.setBackground(normalBackground);
+                button.updateBorderColor(normalbuttonBorder);
             }
         });
         return button;

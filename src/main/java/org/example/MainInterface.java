@@ -2,7 +2,6 @@ package org.example;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -10,52 +9,54 @@ import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Paths;
 
+//import static org.example.LoggedInChat.username;
+
 public class MainInterface {
-//    static class RoundedButton extends JButton {
-//        public RoundedButton(String label) {
-//            super(label);
-//            //makes the background transparent
-//            setContentAreaFilled(false);
-//            setBorderPainted(false);// Ensures no border is painted by default
-//            setOpaque(false);// Ensures full transparency
-//        }
-//
-//        @Override
-//        protected void paintComponent(Graphics g) {
-//            Graphics2D g2 = (Graphics2D) g.create();
-//
-//            // Enable anti-aliasing for smoother corners
-//            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-//
-//            // Check if the button is pressed and set the color accordingly
-//            if (getModel().isArmed()) {
-//                g2.setColor(getBackground().darker());
-//            } else {
-//                g2.setColor(getBackground());
-//            }
-//
-//            // Draw a rounded rectangle with specified corner arcs
-//            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 50, 50);  // 30 is the arc width/height
-//
-//            // Set the color for the text
-//            g2.setColor(getForeground());
-//
-//            // Center the text within the button
-//            FontMetrics fm = g2.getFontMetrics();
-//            int x = (getWidth() - fm.stringWidth(getText())) / 2;
-//            int y = (getHeight() + fm.getAscent()) / 2 - 2;
-//            g2.drawString(getText(), x, y);
-//
-//            // Dispose of the graphics object
-//            g2.dispose();
-//
-//            super.paintComponent(g);
-//        }
-//    }
+    static class RoundedButton extends JButton {
+        public RoundedButton(String label) {
+            super(label);
+            //makes the background transparent
+            setContentAreaFilled(false);
+            setBorderPainted(false);// Ensures no border is painted by default
+            setOpaque(false);// Ensures full transparency
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+
+            // Enable anti-aliasing for smoother corners
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            // Check if the button is pressed and set the color accordingly
+            if (getModel().isArmed()) {
+                g2.setColor(getBackground().darker());
+            } else {
+                g2.setColor(getBackground());
+            }
+
+            // Draw a rounded rectangle with specified corner arcs
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 50, 50);  // 30 is the arc width/height
+
+            // Set the color for the text
+            g2.setColor(getForeground());
+
+            // Center the text within the button
+            FontMetrics fm = g2.getFontMetrics();
+            int x = (getWidth() - fm.stringWidth(getText())) / 2;
+            int y = (getHeight() + fm.getAscent()) / 2 - 2;
+            //g2.drawString(getText(), x, y);
+
+            // Dispose of the graphics object
+            g2.dispose();
+
+            super.paintComponent(g);
+        }
+    }
 
     public static void showGUI() {
         try {
-            ChatBot testing = new ChatBot();
+            LoggedInChat testing = new LoggedInChat();
             //this is the main frame for the interface
             JFrame frame = new JFrame();
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -246,9 +247,6 @@ public class MainInterface {
             mainGBC.weighty = 1;//allowing resizing vertically
             mainPanel.add(welcomePanel, mainGBC);
 
-           //adding the welcome panel to the main panel
-
-
 
             //adding the main panel to the frame that has all the other components
             frame.add(mainPanel);
@@ -269,11 +267,12 @@ public class MainInterface {
 
     }
     //method for styling the buttons
-    private static org.example.RoundedButton createRoundedButton(String text, Color bgColor, Color fgColor, Dimension size){
-        org.example.RoundedButton button = new org.example.RoundedButton(text);
+    static RoundedButton createRoundedButton(String text, Color bgColor, Color fgColor, Dimension size){
+        RoundedButton button = new RoundedButton(text);
         button.setBackground(bgColor);
         button.setForeground(fgColor);
         button.setPreferredSize(size);
+        button.setFocusPainted(false); //removes the focus border
         return button;
     }
     public static void openLogIn() {

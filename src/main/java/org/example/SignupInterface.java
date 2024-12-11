@@ -12,12 +12,16 @@ import java.util.HashMap;
 import org.example.LoginInterface;
 
 import static org.example.ExistingUser.userExistingEmail;
-import static org.example.LoginInterface.addBorder;
-import static org.example.LoginInterface.handleLogin;
+import static org.example.LoginInterface.*;
 import static org.example.NewUser.isValidEmail;
 import static org.example.NewUser.isValidPassword;
+import static org.example.UserInput.store;
 
 public class SignupInterface {
+    private static String userEmail = "";
+    private static String userPassword = "";
+    private static String userPasswordVerif = "";
+    private static String username = "";
     public static void showSignup(){
         try{
             JFrame frame = new JFrame();
@@ -80,7 +84,7 @@ public class SignupInterface {
                     g2.dispose();
                 }
             };
-            signUpPanel.setPreferredSize(new Dimension(400,400));
+            signUpPanel.setPreferredSize(new Dimension(500,500));
             signUpPanel.setOpaque(false);//makes the panel transparent so rounded corners are visible
             //setting the colour of the panel
             signUpPanel.setBackground(new Color(241,163,163));
@@ -99,9 +103,59 @@ public class SignupInterface {
             centerWrapper.add(signUpPanel);
             //adding the text-fields needed
             //border and padding for the text fields
-            Border paddingBorder = BorderFactory.createEmptyBorder(10,20,10,20);
+            Border paddingBorder = BorderFactory.createEmptyBorder(5,20,5,20);
             //line border with desired colour
             Border lineBorder =  BorderFactory.createLineBorder(new Color(72,19,38));
+            //adding the username textfield
+             JTextField usernameField = new JTextField(15);
+             usernameField.setPreferredSize(new Dimension(250,25));
+             //setting the background color for the textfield
+             usernameField.setBackground(Color.white);
+             //setting the color of the text
+            usernameField.setForeground(Color.BLACK);
+            //setting the colour for the placeholder text
+            usernameField.setText("Enter your username");
+            usernameField.setForeground(Color.GRAY);
+
+            //adding the border
+            addBorder(usernameField);
+            //setting the border and padding
+            usernameField.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
+            //adding the focus listener for the text field
+                usernameField.addFocusListener(new FocusListener() {
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        if (usernameField.getText().equals("Enter your username")) {
+                            usernameField.setText("");
+                            usernameField.setForeground(Color.BLACK);
+
+                        }
+                    }
+
+                    @Override
+                    public void focusLost(FocusEvent e) {
+                        if (usernameField.getText().trim().isEmpty()) {
+                            usernameField.setText("Enter your username");
+                            usernameField.setForeground(Color.GRAY);
+                            username = usernameField.getText().trim();
+
+                        }
+                    }
+                });
+
+            //Profile.showProfile(String.valueOf(usernameField));
+            signUpPanel.add(usernameField, signUpPanelGBC);
+            signUpPanelGBC.gridy++;
+            //creating the error message label for the username
+            JLabel usernameError = new JLabel("");
+            usernameError.setForeground(new Color(signUpPanel.getBackground().getRed(),
+                    signUpPanel.getBackground().getGreen(),
+                    signUpPanel.getBackground().getBlue(),0));
+            usernameError.setHorizontalAlignment(SwingConstants.CENTER);
+            signUpPanel.add(usernameError, signUpPanelGBC);
+            signUpPanelGBC.gridy++;
+
+
             //email text field
             JTextField emailField = new JTextField(15);
             //setting the size of the text field
@@ -110,32 +164,41 @@ public class SignupInterface {
             emailField.setBackground(Color.WHITE);
             //setting the text colour for the text field
             emailField.setForeground(Color.BLACK);
-            //setting the size for the text field
+           emailField.setForeground(Color.GRAY);
+//            //default text for password verification
+            emailField.setText("Enter your email");
             addBorder(emailField);
             //setting the border
             emailField.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
-            //adding the focus listener for the textfield
+            //adding the focus listener for the text-field
             emailField.addFocusListener(new FocusListener() {
                 @Override
                 public void focusGained(FocusEvent e) {
-                    //clear the text field only if it has the default text (empty)
-                   if(emailField.getText().equals("Enter your email")){
-                       emailField.setText("");//clearing the text
-                       emailField.setForeground(Color.BLACK);
-                   }
+                    if (emailField.getText().equals("Enter your email")) {
+                        emailField.setText("");
+                        emailField.setForeground(Color.BLACK);
+
+                    }
                 }
 
                 @Override
                 public void focusLost(FocusEvent e) {
-                    //sets the default instructions back only if the text field is empty
-                    emailField.setText("Enter your email");
-                    emailField.setForeground(Color.GRAY);
+
+                    if (emailField.getText().trim().isEmpty()) {
+                        emailField.setText("Enter your email");
+                        emailField.setForeground(Color.GRAY);
+                        userEmail = emailField.getText().trim();
+
+                    }
+
 
                 }
             });
 
+
             signUpPanel.add(emailField, signUpPanelGBC);
             signUpPanelGBC.gridy++;
+
 
             //email error message
             JLabel emailError = new JLabel("");
@@ -152,6 +215,9 @@ public class SignupInterface {
             passwordField.setBackground(Color.WHITE);
             //setting the text colour
             passwordField.setForeground(Color.BLACK);
+            passwordField.setForeground(Color.GRAY);
+            //default text for password verification
+            passwordField.setText("Enter your password");
             //adding the border change of colour
             addBorder(passwordField);
             //setting the border color and the padding
@@ -173,6 +239,7 @@ public class SignupInterface {
                     if(passwordField.getText().trim().isEmpty()){
                         passwordField.setText("Enter your password");
                         passwordField.setForeground(Color.GRAY);
+                        userPassword = passwordField.getText().trim();
                     }
 
                 }
@@ -195,10 +262,15 @@ public class SignupInterface {
             passwordVerificationField.setBackground(Color.WHITE);
             //setting the text colour
             passwordVerificationField.setForeground(Color.BLACK);
+            //setting the text colour
+            passwordVerificationField.setForeground(Color.GRAY);
+            //default text for password verification
+            passwordVerificationField.setText("Re-enter your password");
             //adding the border change of colour
             addBorder(passwordVerificationField);
             //setting the border color and the padding
             passwordVerificationField.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
+
             passwordVerificationField.addFocusListener(new FocusListener() {
                 @Override
                 public void focusGained(FocusEvent e) {
@@ -216,10 +288,12 @@ public class SignupInterface {
                     if(passwordVerificationField.getText().trim().isEmpty()){
                         passwordVerificationField.setText("Re-enter your password");
                         passwordVerificationField.setForeground(Color.GRAY);
+                        userPasswordVerif = passwordVerificationField.getText().trim();
                     }
 
                 }
             });
+
             signUpPanel.add(passwordVerificationField, signUpPanelGBC);
             signUpPanelGBC.gridy++;
 
@@ -231,21 +305,23 @@ public class SignupInterface {
             signUpPanelGBC.gridy++;
 
             //creating the signup button
-            RoundedButton signUpButton = new RoundedButton("Sign up");
+            MainInterface.RoundedButton signUpButton = new MainInterface.RoundedButton("Sign up");
             signUpButton.setBackground(new Color(252, 242, 242));
             signUpButton.setForeground(Color.BLACK);
             signUpButton.setPreferredSize(new Dimension(200, 30));
+            signUpButton.setFocusPainted(false); //removes the focus border
             signUpPanel.add(signUpButton, signUpPanelGBC);
             signUpPanelGBC.gridy++;
 
-            //adding the action listener to call the handle signup method
+           // adding the action listener to call the handle signup method
             signUpButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    //calling the handle signuo method
-                    handleSignup(emailField, emailError, passwordVerificationField, passError2,passwordField,  passError, signUpButton, signUpPanel);
+
+                    //calling the handle signup method
+                    handleSignup(usernameField,usernameError, emailField, emailError, passwordField, passError, passwordVerificationField, passError2, signUpButton, signUpPanel);
                 }
-            });
+        });
 
             JLabel backLabel = new JLabel("Go Back");
             Font labelFont = new Font("inter", Font.PLAIN, 10);
@@ -271,6 +347,14 @@ public class SignupInterface {
                     backLabel.setForeground(Color.BLACK);
                 }
             });
+            // Defer enabling focus until after the UI is fully initialized
+            SwingUtilities.invokeLater(() -> {
+                emailField.setFocusable(true);
+                passwordField.setFocusable(true);
+                passwordVerificationField.setFocusable(true);
+                signUpPanel.requestFocusInWindow(); // Redirect focus away from the text field
+            });
+
 
 
             frame.add(mainPanel);
@@ -290,95 +374,225 @@ public class SignupInterface {
 
 
     }
+    public static boolean handleSignup(
+            JTextField usernameField, JLabel usernameError,
+            JTextField emailField, JLabel emailError,
+            JTextField passwordField, JLabel passError,
+            JTextField passwordVerificationField, JLabel passError2,
+            JButton signupButton, JPanel signupPanel) {
 
-    public static boolean handleSignup(JTextField signupEmail, JLabel emailError, JTextField password, JLabel passError, JTextField passVerif,JLabel passVerifError, JButton signUpButton,JPanel signupPanel ){
         NewUser newUser = new NewUser();
-        //ArrayList<String, String> users = UserInputDatabase.readingFile();
+        ArrayList<HashMap<String, String>> users = UserInput.readingFile();
 
-        //get the text from the email textfield
-        String emailText = signupEmail.getText().trim();//trim removes leading and trailing spaces
-        //getting text from password textfield
-        String passwordText = password.getText().trim();
-        String passwordVerifText = passVerif.getText().trim();
+        // Username validation
+        String usernameInput = usernameField.getText().trim();
+        boolean isPlaceholder = usernameInput.equals("Enter your username");
+        boolean isEmpty = usernameInput.isEmpty();
+        boolean validUsernameCheck = newUser.isValidUsername(usernameInput);
+        String usernameErrorMessage = null;
 
-        //step 1 is tot check if the email text field is empty and set an error message
-        boolean validEmail = true;
+        if (isPlaceholder || isEmpty) {
+            usernameErrorMessage = "Username required";
+        } else if (!validUsernameCheck) {
+            usernameErrorMessage = "Invalid username";
+        }
+        setErrorText(!isPlaceholder && !isEmpty && validUsernameCheck, usernameError, usernameErrorMessage, signupPanel);
+
+        // Email validation
+        String userEmailInput = emailField.getText().trim();
+        boolean isEmailPlaceHolder = userEmailInput.equals("Enter your email");
+        boolean isEmailEmpty = userEmailInput.isEmpty();
+        boolean validEmailCheck = newUser.isValidEmail(userEmailInput);
+        boolean userEmailExisting = userExistingEmail(userEmailInput);
         String emailErrorMessage = null;
-        if(emailText.isEmpty()) {
-            validEmail = false;
-            //if the email field is empty we output an error
+
+        if (isEmailPlaceHolder || isEmailEmpty) {
             emailErrorMessage = "Email required";
+        } else if (userEmailExisting) {
+            emailErrorMessage = "Email already exists";
+        } else if (!validEmailCheck) {
+            emailErrorMessage = "Invalid email";
         }
-        //checking if the email already exists
-        if(userExistingEmail(signupEmail.getText())) {
-            validEmail = false;
-            emailErrorMessage = "this email already exists";
-        } else {
-            if(!isValidEmail(signupEmail.getText())) {
-                validEmail = false;
-                emailErrorMessage = "Invalid email";
-            }
-        }
-        setErrorText(validEmail, emailError, emailErrorMessage, signupPanel);
+        setErrorText(!isEmailPlaceHolder && !isEmailEmpty && validEmailCheck && !userEmailExisting, emailError, emailErrorMessage, signupPanel);
 
-        boolean gettingPassword = isValidPassword(password.getText());
-        String passwordErrorMessage = null;
-        String passwordVerifErrorMessage = null;
-        boolean validPassword = true;
-        //checking if the password fields are empty
-        if(passwordText.isEmpty()) {
-            validPassword = false;
-            passwordErrorMessage = "Required Field";
-            if(gettingPassword){
-                validPassword = false;
-                passwordErrorMessage = "Invalid Password";
-            }
-        }
-        setErrorText(validPassword, passError, passwordErrorMessage, signupPanel);
-        boolean gettingPasswordVerif = isValidPassword(passVerif.getText());
-        boolean passwordValidation = true;
-        if(passwordVerifText.isEmpty()){
-            passwordValidation = false;
-            passwordVerifErrorMessage = "Required Field";
-        } else {
-            if(!isValidPassword(passwordVerifText)) {
-                passwordValidation = false;
-                passwordVerifErrorMessage = "Invalid Password";
-            } else {
-                //if both fields are not empty, check if they match
-                if(passwordText.equals(passwordVerifText)){
-                    passwordValidation = true;
-                }else{
-                    passwordValidation = false;
-                    passwordVerifErrorMessage = "password's don't match";
-                }
-            }
-            setErrorText(passwordValidation, passVerifError, passwordVerifErrorMessage, signupPanel);
-        }
-        if(validEmail && validPassword && passwordValidation){
-            UserInput.store(signupEmail.getText(), passVerif.getText());
-            signUpButton.setBackground(Color.GREEN);
-            signUpButton.setText("Account Created");
-            signUpButton.setPreferredSize(new Dimension(200,30));
+        // Password validation
+        String userPasswordInput = passwordField.getText().trim();
+        boolean isPasswordPlaceHolder = userPasswordInput.equals("Enter your password");
+        boolean isPasswordEmpty = userPasswordInput.isEmpty();
+        boolean validPasswordCheck = newUser.isValidPassword(userPasswordInput);
+        String firstPassErrorMessage = null;
 
+        if (isPasswordPlaceHolder || isPasswordEmpty) {
+            firstPassErrorMessage = "Password required";
+        } else if (!validPasswordCheck) {
+            firstPassErrorMessage = "Invalid password";
         }
+        setErrorText(!isPasswordPlaceHolder && !isPasswordEmpty && validPasswordCheck, passError, firstPassErrorMessage, signupPanel);
+
+        // Password verification
+        String userPasswordVerifInput = passwordVerificationField.getText().trim();
+        boolean isPasswordVerifPlaceHolder = userPasswordVerifInput.equals("Enter your password");
+        boolean isPasswordVerifEmpty = userPasswordVerifInput.isEmpty();
+        boolean validPasswordVerifCheck = newUser.isValidPassword(userPasswordVerifInput);
+        String secondPassErrorMessage = null;
+        boolean passwordValidation = userPasswordInput.equals(userPasswordVerifInput);
+
+        if (isPasswordVerifPlaceHolder || isPasswordVerifEmpty) {
+            secondPassErrorMessage = "Password required";
+        } else if (!validPasswordVerifCheck) {
+            secondPassErrorMessage = "Invalid password";
+        } else if (!passwordValidation) {
+            secondPassErrorMessage = "Passwords do not match";
+        }
+        setErrorText(!isPasswordVerifPlaceHolder && !isPasswordVerifEmpty && validPasswordVerifCheck && passwordValidation, passError2, secondPassErrorMessage, signupPanel);
+
+        // Final validation and account creation
+        if (!isPlaceholder && !isEmpty && validUsernameCheck &&
+                !isEmailPlaceHolder && !isEmailEmpty && validEmailCheck && !userEmailExisting &&
+                !isPasswordPlaceHolder && !isPasswordEmpty && validPasswordCheck &&
+                !isPasswordVerifPlaceHolder && !isPasswordVerifEmpty && validPasswordVerifCheck && passwordValidation) {
+
+            store(usernameInput, userEmailInput, userPasswordInput);
+            signupButton.setBackground(Color.GREEN);
+            signupButton.setText("Account Created");
+            signupButton.setPreferredSize(new Dimension(200, 30));
+            return true;
+        }
+
+        // If validation fails, return false
         return false;
-
     }
 
-    public static void setErrorText(boolean validation, JLabel errorLabel, String errorMessage, JPanel signupPanel){
+
+//    public static boolean handleSignup(JTextField usernameField,JLabel usernameError, JTextField emailField ,JLabel emailError,JTextField passwordField,  JLabel passError, JTextField passwordVerificationField, JLabel passError2,JButton signupButton,
+//                                       JPanel signupPanel ) {
+//
+//        NewUser newUser = new NewUser();
+//        ArrayList<HashMap<String, String>> users = UserInput.readingFile();
+//
+//
+//// Check username input during validation
+//        String usernameInput = usernameField.getText().trim();
+//        boolean isPlaceholder = usernameInput.equals("Enter your username");
+//        boolean isEmpty = usernameInput.isEmpty();
+//        boolean validUsernameCheck = newUser.isValidUsername(usernameInput);
+//
+//        String usernameErrorMessage = null;
+//
+//// Validation rules
+//        if (isPlaceholder || isEmpty) {
+//            usernameErrorMessage = "Username required";
+//        } else if (!validUsernameCheck) {
+//            usernameErrorMessage = "Invalid username";
+//        }
+//
+//// Set error message
+//        setErrorText(!isPlaceholder && !isEmpty && validUsernameCheck, usernameError, usernameErrorMessage, signupPanel);
+//
+//        String userEmailInput = emailField.getText().trim();
+//        boolean isEmailPlaceHolder = userEmailInput.equals("Enter your email");
+//        boolean isEmailEmpty = userEmailInput.isEmpty();
+//        boolean validEmailCheck = newUser.isValidEmail(userEmailInput);
+//        boolean userEmailExisting = userExistingEmail(userEmailInput);
+//
+//        String emailErrorMessage = null;
+//        if (isEmailPlaceHolder || isEmailEmpty) {
+//            //output an error
+//            emailErrorMessage = "Email required";
+//        }
+//        //checks if the user email entered already exists
+//        if (userEmailExisting) {
+//            emailErrorMessage = "Email already exists";
+//        } else {
+//            if (!validEmailCheck) {
+//                emailErrorMessage = "Invalid email";
+//            }
+//        }
+//        setErrorText(!isEmailPlaceHolder && !isEmailEmpty && validEmailCheck, emailError, emailErrorMessage, signupPanel);
+//
+//
+//
+//
+//        String userPasswordInput = passwordField.getText().trim();
+//        boolean isPasswordPlaceHolder = userPasswordInput.equals("Enter your password");
+//        boolean isPasswordEmpty = userPasswordInput.isEmpty();
+//        boolean validPasswordCheck = newUser.isValidPassword(userPasswordInput);
+//        String firstPassErrorMessage = null;
+//        // checking if the password fields are empty
+//        if (isPasswordPlaceHolder || isPasswordEmpty) {
+//            //checks if the password field is the place-holder text or is empty and outputs an error accordingly
+//            firstPassErrorMessage = "Invalid password";
+//            if (!validPasswordCheck) {
+//                //checks if the password entered by the user passes the validation conditions
+//                firstPassErrorMessage = "Password required";
+//            }
+//        }
+//
+//        setErrorText(!isPasswordPlaceHolder && !isPasswordEmpty && validPasswordCheck, passError, firstPassErrorMessage, signupPanel);
+//        boolean passwordValidation = true;
+//
+//        String userPasswordVerifInput = passwordVerificationField.getText().trim();
+//        boolean isPasswordVerifPlaceHolder = userPasswordVerifInput.equals("Enter your password");
+//        boolean isPasswordVerifEmpty = userPasswordInput.isEmpty();
+//        boolean validPasswordVerifCheck = newUser.isValidPassword(userPasswordVerifInput);
+//        String secondPassErrorMessage = null;
+//        if (isPasswordVerifPlaceHolder || isPasswordVerifEmpty) {
+//            //checks if the field is the place-holder or id empty and outputs an error
+//            secondPassErrorMessage = "Invalid password";
+//        } else {
+//            if (!validPasswordVerifCheck) {
+//                //checks if the password passes te verification conditions set
+//                secondPassErrorMessage = "Password required";
+//            } else
+//                // if both fields are not empty, check if they match
+//                if (userPasswordInput.equals(userPasswordVerifInput)) {
+//                    passwordValidation = true;
+//                    //secondPassErrorMessage = "Password already exists";
+//                } else {
+//                    passwordValidation = false;
+//                    secondPassErrorMessage = "password does not match the requirements";
+//                }
+//        }
+//        setErrorText(!isPasswordVerifPlaceHolder && !isPasswordVerifEmpty && validPasswordVerifCheck && passwordValidation, passError2, secondPassErrorMessage,signupPanel);
+//
+//        //if (!isEmailPlaceHolder && !isEmailEmpty && validEmailCheck && !isPasswordPlaceHolder && !isPasswordEmpty && validPasswordCheck && !isPasswordVerifPlaceHolder && !isPasswordVerifEmpty && validPasswordVerifCheck && passwordValidation && validUsernameCheck) {
+//
+//            store(usernameInput,userEmailInput, userPasswordVerifInput);
+//            signupButton.setBackground(Color.GREEN);
+//            signupButton.setText("Account Created");
+//            signupButton.setPreferredSize(new Dimension(200,30));
+//
+//        //}
+//
+//        return false;
+//
+//    }
+
+public static void setErrorText(boolean isValid, JLabel errorLabel, String errorMessage, JPanel signupPanel) {
+    if (isValid) {
+        // Clear the error message and make the label transparent
+        errorLabel.setText("");
+        errorLabel.setForeground(new Color(0, 0, 0, 0)); // Fully transparent
+    } else {
+        // Display the error message in red
         errorLabel.setText(errorMessage);
-        if(validation){
-            errorLabel.setForeground(new Color(signupPanel.getBackground().getRed(), signupPanel.getBackground().getGreen(), signupPanel.getBackground().getBlue(),0));
-        } else {
-            errorLabel.setForeground(Color.RED);
-            errorLabel.setPreferredSize(new Dimension(300,15));
-        }
+        errorLabel.setForeground(Color.RED);
+        errorLabel.setPreferredSize(new Dimension(300, 15)); // Optional: Adjust size for consistency
     }
+    signupPanel.revalidate(); // Revalidate the panel to reflect changes
+    signupPanel.repaint();   // Repaint the panel to ensure updates are visible
+}
+
+
 
     public static void openWelcomePage(){
         MainInterface  welcomePage = new MainInterface();
         welcomePage.showGUI();
     }
+        private static void openChatGUI() {
+            LoggedInChat loggedInChat = new LoggedInChat();
+            loggedInChat.showChatBot();
+
+        }
 
 }

@@ -3,8 +3,8 @@ package org.example;
 import javax.swing.*;
 
 import static org.example.MainInterface.showGUI;
-import static org.example.ChatBot.showChatBot;
-import static org.example.StayLoggedOut.showStayLogOut;
+import static org.example.Profile.showProfile;
+
 
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -22,8 +22,13 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
+//                // Create an instance of LoggedInChat
+//                LoggedInChat loggedInChat = new LoggedInChat();
+//
+//                // Call the non-static method on the instance
+//                loggedInChat.showChatBot();
                 showGUI();
-
+//
            }
         });
     }

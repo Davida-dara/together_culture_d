@@ -42,4 +42,29 @@ public class NewUser {
         // if all the criteria is met
         return true;
     }
-}
+    public static boolean isValidUsername(String username) {
+
+        if (username == null || username.trim().isEmpty()) {
+            return false; // Null or empty username
+        }
+           if (username == null || username.length() <= 3) {
+                return false; // At least 4 characters required
+            }
+
+            boolean hasUpperCase = username.matches(".*[A-Z].*");
+            boolean hasLowerCase = username.matches(".*[a-z].*");
+            boolean hasDigit = username.matches(".*\\d.*");
+        System.out.println("Username Length Valid: " + (username.length() > 3));
+        System.out.println("Contains Uppercase: " + hasUpperCase);
+        System.out.println("Contains Lowercase: " + hasLowerCase);
+        System.out.println("Contains Digit: " + hasDigit);
+
+            // Username must have at least one uppercase, one lowercase, and one digit
+            return hasUpperCase && hasLowerCase && hasDigit;
+
+
+    }
+
+    }
+
+
