@@ -11,14 +11,6 @@ import static org.example.Profile.showProfile;
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void  main(String[] args) {
-       //Database Connection
-//        String url = "jdbc:mysql://localhost:3306/together_culture";
-//        String AdName = "tgcadmin";
-//        String passKey = "1234tgc";  //retyped in the correct password
-//        //Call and instantiate the Together Culture Database
-//        connection TGCDB = new connection(url, AdName, passKey);
-//        TGCDB.getConnected();
-//        TGCDB.getDisconnected();
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -27,6 +19,8 @@ public class Main {
 //
 //                // Call the non-static method on the instance
 //                loggedInChat.showChatBot();
+                LoggedInChat testing = new LoggedInChat();
+                testing.processConversation();
                 showGUI();
 //
            }

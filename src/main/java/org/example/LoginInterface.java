@@ -7,6 +7,7 @@ import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -29,7 +30,10 @@ public class LoginInterface {
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     // the main panel that will have all the different panels with components
                     JPanel mainPanel = new JPanel(new BorderLayout()){
-                            Image backgroundImage = ImageIO.read(new File("/Users/gaiiaharb/Library/CloudStorage/OneDrive-AngliaRuskinUniversity/year2/OOP/TogetherCultureChatBot/src/main/java/org/example/background.png"));
+                            //code to get the file path of background image
+                            String imgPath1 = Paths.get("src/main/java/org/example/", "background.png").toString();
+
+                            Image backgroundImage = ImageIO.read(new File(imgPath1));
                             @Override
                             public void paintComponent(Graphics b) {
                                     super.paintComponent(b);
