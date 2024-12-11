@@ -7,7 +7,8 @@
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="jar://$USER_HOME$/.ideaLibSources/mysql-connector-java-8.0.30-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/mysql/mysql-connector-java/8.0.30/mysql-connector-java-8.0.30-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/com/google/protobuf/protobuf-java/3.19.4/protobuf-java-3.19.4-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

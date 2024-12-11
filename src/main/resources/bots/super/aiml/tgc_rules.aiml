@@ -20,6 +20,7 @@
     <think><set name = "eventname"><star /></set></think>
     <star/> is happening tomorrow!
 </template>
+
 </category>
 </topic>
 

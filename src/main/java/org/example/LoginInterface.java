@@ -16,7 +16,13 @@ import static org.example.SignupInterface.openWelcomePage;
 import static org.example.SignupInterface.setErrorText;
 
 public class LoginInterface {
+        private static String userEmail = "";
+        private static String userPassword = "";
+        private static String username = "";
+
     public static void showLogIn(){
+
+
 
             try{
                     JFrame frame = new JFrame();
@@ -97,9 +103,54 @@ public class LoginInterface {
                     logInPanel.add(loginLabel, gbc);
                     gbc.gridy++;
                     //adding the padding for the border and the border color
-                    Border paddingBorder = BorderFactory.createEmptyBorder(10,20,10,20);
+                    Border paddingBorder = BorderFactory.createEmptyBorder(5,20,5,20);
                     //line border with desired colour
                     Border lineBorder = BorderFactory.createLineBorder(new Color(72, 19, 38));
+                    //adding te username text-field
+                    JTextField usernameField = new JTextField(15);
+                    usernameField.setPreferredSize(new Dimension(250, 20));
+                    //setting the text-field colour
+                    usernameField.setBackground(Color.WHITE);
+                    //setting the placeholder text
+                    usernameField.setText("Enter username");
+                    //setting the text colour for the placeholder
+                    usernameField.setForeground(Color.GRAY);
+                    addBorder(usernameField);
+                    usernameField.setBorder(BorderFactory.createCompoundBorder(lineBorder, paddingBorder));
+                    //clearing the textfield from default text when the user clicks on it
+                    usernameField.addFocusListener(new FocusListener() {
+                            @Override
+                            public void focusGained(FocusEvent e) {
+                                    //clear the text field only if the textfield is still empty
+                                    if(usernameField.getText().equals("Enter username")){
+                                            usernameField.setText("");//clearing the text
+                                            usernameField.setForeground(Color.BLACK);
+
+                                    }
+
+                            }
+
+                            @Override
+                            public void focusLost(FocusEvent e) {
+                                    //if the text field is empty it will reset the text
+                                    if(usernameField.getText().trim().isEmpty()){
+                                            usernameField.setText("Enter username");
+                                            usernameField.setForeground(Color.GRAY);
+                                            username = usernameField.getText().trim();
+                                    }
+
+                            }
+                    });
+                    //creating the error message label for the username field
+                    //adding the email error messages
+                    JLabel usernameError = new JLabel("");
+                    usernameError.setForeground(new Color(logInPanel.getBackground().getRed(), logInPanel.getBackground().getGreen(), logInPanel.getBackground().getBlue(),0));
+                    usernameError.setHorizontalAlignment(SwingConstants.CENTER);
+                    logInPanel.add(usernameError, gbc);
+                    gbc.gridy++;
+
+
+
                     //textfield for the user to enter email
                     JTextField emailField = new JTextField(15);
                     //setting the size of the textfield
@@ -107,6 +158,9 @@ public class LoginInterface {
                     //setting the text field colour
                     emailField.setBackground(Color.WHITE);
                     emailField.setForeground(Color.BLACK);
+                    emailField.setForeground(Color.GRAY);
+                    //default text for password verification
+                    emailField.setText("Enter your email");
                     addBorder(emailField);
                     //adding the padding for the text in the textField to be moved to right
                     emailField.setBorder(BorderFactory.createCompoundBorder(lineBorder,paddingBorder));
@@ -118,16 +172,17 @@ public class LoginInterface {
                                    if(emailField.getText().equals("Enter your email")){
                                            emailField.setText("");//clearing the text
                                            emailField.setForeground(Color.BLACK);
+
                                    }
 
                             }
-
                             @Override
                             public void focusLost(FocusEvent e) {
                                     //if the text field is empty it will reset the text
                                     if(emailField.getText().trim().isEmpty()){
                                             emailField.setText("Enter your email");
                                             emailField.setForeground(Color.GRAY);
+                                            userEmail = emailField.getText().trim();
                                     }
 
                             }
@@ -143,15 +198,19 @@ public class LoginInterface {
                     gbc.gridy++;
 
                     // text field for the user to enter their log in password
-                    JTextField passwordField = new JTextField(15);
+                    JPasswordField passwordField = new JPasswordField(15);
                     //setting the textfield size
                     passwordField.setPreferredSize(new Dimension(250,25));
                     //setting the background color and the text color
                     passwordField.setBackground(Color.WHITE);
                     passwordField.setForeground(Color.BLACK);
+                    passwordField.setForeground(Color.GRAY);
+                    passwordField.setText("Enter your password");
+                    passwordField.setEchoChar((char)0);
                     //setting the border color change for the border
                     addBorder(passwordField);
                     passwordField.setBorder(BorderFactory.createCompoundBorder(lineBorder,paddingBorder));
+
                     //adding the focus listener to add and remove default text in the textfield when user clicks on the field
                     passwordField.addFocusListener(new FocusListener() {
                             @Override
@@ -160,6 +219,7 @@ public class LoginInterface {
                                     passwordField.getText().equals("Enter your password");
                                     passwordField.setText(""); // clearing the text field
                                     passwordField.setForeground(Color.BLACK);
+                                    passwordField.setEchoChar('*'); // Enable password masking
                             }
 
                             @Override
@@ -170,6 +230,8 @@ public class LoginInterface {
                                             //resets to placeholder text
                                             passwordField.setText("Enter your password");
                                             passwordField.setForeground(Color.GRAY);
+                                            passwordField.setEchoChar((char)0);
+                                            userPassword = passwordField.getText().trim();
                                     }
 
                             }
@@ -186,16 +248,17 @@ public class LoginInterface {
                     gbc.gridy++;
 
                     //creating the log in button
-                    RoundedButton logInButton = new RoundedButton("Log in");
+                    MainInterface.RoundedButton logInButton = new MainInterface.RoundedButton("Log in");
                     logInButton.setBackground(new Color(72, 19, 38));
                     logInButton.setForeground(Color.WHITE);
                     logInButton.setPreferredSize(new Dimension(200,30));
+                    logInButton.setFocusPainted(false); //removes the focus border
                     logInPanel.add(logInButton,gbc);
                     logInButton.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
                                     //calling the handle login method
-                                    handleLogin(emailField, passwordField, emailError, passwordError, logInPanel);
+                                    handleLogin(usernameField,usernameError, emailField, passwordField, emailError, passwordError, logInPanel);
                             }
                     });
                     gbc.gridy++;
@@ -220,6 +283,13 @@ public class LoginInterface {
                                     backLabel.setForeground(Color.BLACK);
                             }
                     });
+                    // Defer enabling focus until after the UI is fully initialized
+                    SwingUtilities.invokeLater(() -> {
+                            emailField.setFocusable(true);
+                            passwordField.setFocusable(true);
+                            usernameField.setFocusable(true);
+                            logInPanel.requestFocusInWindow(); // Redirect focus away from the text field
+                    });
                     centerWrapper.add(logInPanel);
                     //adding the panel to the frame
                     frame.add(mainPanel);
@@ -238,52 +308,79 @@ public class LoginInterface {
 
 
     }
-    public static boolean handleLogin(JTextField emailTextfield, JTextField passwordTextfield, JLabel emailError, JLabel passwordError, JPanel panel){
+    public static boolean handleLogin(JTextField usernameField, JLabel usernameError, JTextField emailField, JTextField passwordField, JLabel emailError, JLabel passwordError, JPanel panel){
             ExistingUser existingUser = new ExistingUser();
             ArrayList<HashMap<String, String>> users = UserInput.readingFile();
-            boolean existingEmail = userExistingEmail(emailTextfield.getText());
-            boolean existingPassword = existingUser.userExistingPswd(users, passwordTextfield.getText(), emailTextfield.getText());
-            boolean passedValidation = true;
+            //username checks
+            String userNameInput = usernameField.getText().trim();
+            boolean isUserNamePlaceHolder = userNameInput.equals("Enter username");
+            boolean isNameEmpty = userNameInput.isEmpty();
+            boolean isExistingUsername = existingUser.existingUsername(userNameInput);
+            boolean isValidUserName = NewUser.isValidUsername(userNameInput);
+            String userNameErrorMessage = "";
+            if(isUserNamePlaceHolder || isNameEmpty){
+                    //checks if the user-name text field is empty or is the placeholder text
+                    //if true outputs the following error message
+                  userNameErrorMessage = "Username required";
+            }else if(!isExistingUsername){
+                    //checks if the username doesn't exist in the user text file
+                    // if true outputs the following error message
+                    userNameErrorMessage = "Username not recognised";
+            }else if (!isValidUserName){
+                    //checks if the username follows the requirements
+                    //if it false oputputs the following error
+                    userNameErrorMessage = "Invalid username";
 
-            String emailErrorMessage = "";
-            boolean emailValid= true;
-            //if the email does not have all the characteristics
-            if(!NewUser.isValidEmail(emailTextfield.getText())){
-                    emailValid = false;
-                    emailErrorMessage = "Invalid email";
-            } else{
-                    if(!existingEmail){
-                            emailValid = false;
-                            emailErrorMessage = "Email does not exist. Please sign up";
-                    }
             }
-            setErrorText(emailValid, emailError, emailErrorMessage, panel);
+            setErrorText(!isUserNamePlaceHolder && !isNameEmpty && isExistingUsername && isValidUserName, usernameError, userNameErrorMessage,panel);
+
+            //email checks
+            String userEmailInput = emailField.getText().trim();
+            boolean userEmailPlaceHolder = userEmailInput.equals("Enter your email");
+            boolean isEmailEmpty = userEmailInput.isEmpty();
+            boolean existingEmailCheck = userExistingEmail(userEmailInput);
+            boolean isValidEmailCheck = NewUser.isValidEmail(userEmailInput);
+            String emailErrorMessage = "";
+            //checks if the email field is empty or it is the place-holder text
+            if(userEmailPlaceHolder || isEmailEmpty){
+                    //error message
+                    emailErrorMessage = "Email Required";
+            }
+            //if the email does not have all the characteristics
+            else if(!isValidEmailCheck){
+                    //if the email does not pass the email requirements an error will be outputted
+                    emailErrorMessage = "Invalid email";
+            } else if(!existingEmailCheck){
+                           //checks if thr email exists in the db if not outputs an error
+                            emailErrorMessage = "Email not recognised";
+            }
+
+            setErrorText(!userEmailPlaceHolder && !isEmailEmpty && existingEmailCheck && isValidEmailCheck , emailError, emailErrorMessage, panel);
 
             String passwordErrorMessage = "";
-            boolean passwordValid = true;
-            //if the password and the email exist then it will let the user in to their account
-            if(emailValid){
-                    if(existingPassword && existingEmail){
-                            System.out.println("Successful log in");
-                    }
-
-                    if(!NewUser.isValidPassword(passwordTextfield.getText())) {
-                            passwordValid = false;
-                            passwordErrorMessage = "Invalid password";
-                    } else {
-                            if(!existingPassword){
-                                    passwordValid = false;
-                                    passwordErrorMessage = "password not recognised";
-                            }
-                    }
-                    setErrorText(passwordValid, passwordError, passwordErrorMessage, panel);
+            String userPasswordInput = passwordField.getText().trim();
+            boolean userPasswordPlaceHolder = userPasswordInput.equals("Enter your password");
+            boolean isPasswordEmpty = userPasswordInput.isEmpty();
+            boolean existingPasswordCheck = existingUser.userExistingPswd(users,userNameInput, userPasswordInput, userEmailInput);
+            boolean isValidPasswordCheck = NewUser.isValidEmail(userPasswordInput);
+            //checks if the password field is empty or is the place-holder text
+            if (userPasswordPlaceHolder || isPasswordEmpty){
+                    passwordErrorMessage = "Password required";
 
             }
-            return false;
+            if (userPasswordPlaceHolder || isPasswordEmpty) {
+                    passwordErrorMessage = "Password is required.";
+            } else if (!isValidPasswordCheck) {
+                    passwordErrorMessage = "Invalid password.";
+            } else if (!existingPasswordCheck) {
+                    passwordErrorMessage = "Password not recognised.";
+            }
+                    setErrorText(!userPasswordPlaceHolder && !isPasswordEmpty && existingPasswordCheck && isValidPasswordCheck, passwordError, passwordErrorMessage, panel);
 
-
+      return false;
     }
-      static void addBorder(JTextField textField){
+
+        static void addBorder(JTextField textField){
             Border defaultPadding = BorderFactory.createEmptyBorder(5,20,5,20);
             Border defaultColour = BorderFactory.createLineBorder(Color.GRAY);
             //when the user clicks and unclicks the textfield the border colour will change
@@ -302,6 +399,11 @@ public class LoginInterface {
                     }
             });
 
+    }
+
+    static void openLoggedInChat(){
+            LoggedInChat chatbot = new LoggedInChat();
+            chatbot.showChatBot();
     }
 
 
