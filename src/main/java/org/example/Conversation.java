@@ -25,7 +25,7 @@ public class Conversation {
         TGCDB.getConnected();
         //  TGCDB.getDisconnected();
 
-        this.text = text;
+        this.text = text.toLowerCase();
         populate_array_list();
         chatbot_logic();
 
@@ -60,7 +60,7 @@ public class Conversation {
                 }
                 break;
             case "events":
-                String t = chatbot_event_rules();
+                System.out.println(chatbot_event_rules());
                 //event booking sql statements
                 break;
             case "memberships":
@@ -76,7 +76,7 @@ public class Conversation {
         if (text.contains("how many")) {
             return how_many_events();
         }
-        if (text.toLowerCase().contains("when is")) {
+        if (text.contains("when is")) {
             return locate_date();
         }
 
@@ -84,9 +84,9 @@ public class Conversation {
     }
 
     public String locate_date() {
-        String query1, output;
-        String query2, query3;
-        int rowCount;
+        String output = "";
+        String query1, query2, query3;
+        int rowCount = 0;
         //get the event name
         String event_name = "Tech talks";
 
@@ -94,9 +94,13 @@ public class Conversation {
         query1 = "SELECT count(*) AS events_count FROM events;";
         ResultSet result1 = TGCDB.ExecuteQuery(query1);
         try {
+            while (result1.next()) {
             rowCount = Integer.parseInt(result1.getString("events_count"));
+            }
+            System.out.println(rowCount);
         } catch (SQLException e) {
-            return sqlErrorMessage();
+           // ..//  throw Exception (e);
+            //    return sqlErrorMessage();
         }
 
         //Create an array storing the list of events in the table
@@ -118,11 +122,14 @@ public class Conversation {
         }
 
 
-        query2 = "SELECT event_name, date_of_event  FROM events WHERE event_name = " + event_name;
+        query2 = "SELECT event_name, date_of_event  FROM events WHERE event_name = \"" + event_name + "\";";
+        System.out.println(query2);
         ResultSet result2 = TGCDB.ExecuteQuery(query2);
         try {
-            output = result2.getString("event_name") + " is happening on ";
-            output += result2.getString("events_count");
+            while (result2.next()) {
+                output = result2.getString("event_name") + " is happening on ";
+                output += result2.getString("date_of_event");
+            }
         } catch (SQLException e) {
             return sqlErrorMessage();
         }
