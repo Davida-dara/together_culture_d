@@ -1,3 +1,2 @@
-JohnDoe,john@example.com,password123
-gaiiaHarb1,gaiiaharb@icloud.com,ElieHarb12!Gaiaaa12,gigiH@gmail.com,AngelH30!
-Gaiaaa12,gigiH@gmail.com,AngelH30!
+Gaiaa12,gaiaharb15@gmail.com,ElieHarb13!
+Angel3,angel34@gmal.com,Pickle18!

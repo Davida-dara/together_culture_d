@@ -28,7 +28,6 @@ public class Main {
 //                // Call the non-static method on the instance
 //                loggedInChat.showChatBot();
                 showGUI();
-//
            }
         });
     }

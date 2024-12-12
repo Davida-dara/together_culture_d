@@ -13,30 +13,7 @@ import java.net.URI;
 import static org.example.StayLoggedOut.roundTextFieldBorder;
 
 public class LoggedInChat {
-//    private Bot bot;
-//
-//    private static final String BOTNAME = "super";
-//    private Chat chatSession;
-////    Loading AIML Files for chatbot conversations
-//    public ChatBot() {
-//        String botClassPath = "src/main/resources";
-//        this.bot = new Bot(BOTNAME, botClassPath);
-//        this.chatSession = new Chat(bot);
-//        generateResponse(null);
-//    }
-//
-//    //Testing conversation
-//    public void generateResponse(String userInput) {
-//        Scanner keyboard = new Scanner(System.in);
-//        for (int i = 0; i < 3; i++) {
-//            userInput = keyboard.nextLine();
-//            // userInput = "I have a question";
-//            if (this.chatSession != null) {
-//                String response = chatSession.multisentenceRespond(userInput);
-//                System.out.println("Bot: " + response);
-//            } else System.out.println("chat is not properly initialized");
-//        }
-//    }
+
 // Class to represent chat history
 class Chat {
     private String name;
@@ -250,75 +227,6 @@ class Chat {
         //adding it to the main panel
         mainPanel.add(profileButtonContainer, BorderLayout.EAST);
 
-
-//            //CHAT HISTORY DROP DOWN PANEL
-//        JPanel chatHistoryPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//        chatHistoryPanel.setOpaque(false); // no background colour
-//        //creating the chat history drop down
-//        String[] chatHistoryOptions = {"Previous Chats", "Chat 1", "Chat 2"};
-//        JComboBox<String> chatHistoryDropdown = new JComboBox<>(chatHistoryOptions);
-//        chatHistoryDropdown.setPreferredSize(new Dimension(175, 70)); // Set size
-//        //chatHistoryDropdown.setBackground(new Color(252, 73, 97)); // Dropdown background color
-//        chatHistoryDropdown.setForeground(Color.BLACK); // Text color
-//        chatHistoryDropdown.setOpaque(false); // no background colour
-//
-//
-//         // Customize the dropdown font and alignment
-//        chatHistoryDropdown.setFont(new Font("Arial", Font.PLAIN, 18));
-//        chatHistoryDropdown.setFocusable(false); // Prevent focus border on selection
-//        // Add an action listener to handle dropdown selection
-//        chatHistoryDropdown.addActionListener(e -> {
-//            String selectedChat = (String) chatHistoryDropdown.getSelectedItem();
-//            if (!selectedChat.equals("Select Chat")) {
-//                JOptionPane.showMessageDialog(frame, "Loading: " + selectedChat, "Chat History", JOptionPane.INFORMATION_MESSAGE);
-//
-//            }
-//        });
-//
-//// Add the dropdown to the panel
-//        chatHistoryPanel.add(chatHistoryDropdown);
-//
-//        //FAQ DROP DOWN PANEL
-//        JPanel faqPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-//        faqPanel.setOpaque(false);//no background colour
-//        //creating the drop down
-//        String[] faqOptions = {"FAQ","","",""};
-//        JComboBox<String> faqDropDown = new JComboBox<>(faqOptions);
-//        //setting the size
-//        faqDropDown.setPreferredSize(new Dimension(175,70));
-//        //setting the text colour
-//        faqDropDown.setForeground(Color.BLACK);
-//        faqDropDown.setOpaque(false);//no background colour
-//        //customise drop down font and alignment
-//        faqDropDown.setFont(new Font("Arial", Font.PLAIN, 18));
-//        faqDropDown.setFocusable(false);//prevent focus border on selection
-//        faqDropDown.addActionListener(e ->{
-//            String selectedFAQ = (String) faqDropDown.getSelectedItem();
-//            if(!selectedFAQ.equals("FAQ")){
-//                JOptionPane.showMessageDialog(frame, "loading: " + selectedFAQ, "FAQ", JOptionPane.INFORMATION_MESSAGE);
-//            }
-//        });
-//        //add dropdown to the panel
-//        faqPanel.add(faqDropDown);
-//
-//
-//// Create a container panel for stacking the dropdowns vertically
-//        JPanel dropdownContainer = new JPanel();
-//        dropdownContainer.setOpaque(false); // Transparent background
-//        dropdownContainer.setLayout(new BoxLayout(dropdownContainer, BoxLayout.Y_AXIS)); // Vertical layout
-//
-//// Add spacing between dropdowns and align them to the left
-//        chatHistoryPanel.setAlignmentX(Component.LEFT_ALIGNMENT); // Align to left
-//        faqPanel.setAlignmentX(Component.LEFT_ALIGNMENT); // Align to left
-//        dropdownContainer.add(chatHistoryPanel); // Add chat history dropdown
-//        dropdownContainer.add(Box.createVerticalStrut(10)); // Add spacing between dropdowns
-//        dropdownContainer.add(faqPanel); // Add FAQ dropdown
-//
-//
-
-//// Add the bottomContainer to the SOUTH of the side-Panel
-//        sidePanel.add(bottomContainer, BorderLayout.SOUTH);
-
         // Chat History Dropdown
         Chat[] chatHistoryOptions = {
                 new Chat("Previous Chats", -1),
@@ -330,9 +238,9 @@ class Chat {
         chatHistoryDropdown.setRenderer(new CustomComboBoxRenderer());
 
         // Apply rounded border
-        chatHistoryDropdown.setBorder(new RoundedBorder(15)); // Adjust radius as needed
+       // chatHistoryDropdown.setBorder(new RoundedBorder(15)); // Adjust radius as needed
 
-        chatHistoryDropdown.setPreferredSize(new Dimension(175, 70));
+        chatHistoryDropdown.setPreferredSize(new Dimension(200, 70));
         chatHistoryDropdown.setFont(new Font("Arial", Font.PLAIN, 18));
         chatHistoryDropdown.setFocusable(false);
         chatHistoryDropdown.addActionListener(e -> {
@@ -354,16 +262,26 @@ class Chat {
         // FAQ Dropdown
         FAQ[] faqOptions = {
                 new FAQ("Select FAQ", ""),
-                new FAQ("What is this app?", "This app helps you interact with our chatbot."),
-                new FAQ("How to use the chatbot?", "Simply type your question and press Enter.")
+                new FAQ("What is the purpose of this Chat bot?", "This chat bot answers all the different questions you have about the company," +
+                        " directs you to the right places to buy an event ticket or to become a member on the website, and allows you to book a workspace"),
+                new FAQ("Where and how to book an event?", "To be able to book an event you go to the together culture website by pressing on the logo, " +
+                        "go to Upcoming Events under Events section."),
+                new FAQ("How to become a member?","To be able to become a member you can go to the website by clicking on the logo displayed, " +
+                        "on the website and click on the membership button in the navigation bar"),
+                new FAQ("Where is Together Culture?","Together Culture is located in cambridge, the address is," +
+                        "5 Fitzroy Street, Cambridge, CB1 1ER"),
+                new FAQ ("What are the opening/closing times?", "We are open from 12pm to 5 pm Monday to Friday"),
+                new FAQ  ("How do i change my password?", "If you  are logged in, you press on the profile button -> Reset Password button, " +
+                        "if not logged in and trying to log in there will be a Forgot password button located under the password"),
+                new FAQ ("How do i log out ?", "Press on the Profile button -> Log out Button")
         };
         JComboBox<FAQ> faqDropDown = new JComboBox<>(faqOptions);
         // Apply custom renderer
         faqDropDown.setRenderer(new CustomComboBoxRenderer());
 
         // Apply rounded border
-        faqDropDown.setBorder(new RoundedBorder(15)); // Adjust radius as needed
-        faqDropDown.setPreferredSize(new Dimension(175, 70));
+       // faqDropDown.setBorder(new RoundedBorder(15)); // Adjust radius as needed
+        faqDropDown.setPreferredSize(new Dimension(200, 70));
         faqDropDown.setFont(new Font("Arial", Font.PLAIN, 18));
         faqDropDown.setFocusable(false);
         faqDropDown.addActionListener(e -> {
@@ -453,8 +371,6 @@ class Chat {
         contentContainer.add(logoPanel);
         // Add spacing between the logoPanel and the text field
         contentContainer.add(Box.createVerticalStrut(20));
-
-
 
         //Creating the text-field where the user will initially type in there question to the chatbot
         org.example.RoundedTextField textEntryField = new org.example.RoundedTextField(40,20);
