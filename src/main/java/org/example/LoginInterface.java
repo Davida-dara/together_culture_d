@@ -2,6 +2,8 @@ package org.example;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -242,6 +244,31 @@ public class LoginInterface {
                     });
                     logInPanel.add(passwordField, gbc);
                     gbc.gridy++;
+                    //forgot password button
+                    JLabel forgotPassword = new JLabel("Forgot Password");
+                    forgotPassword.setFont(new Font("inter", Font.BOLD, 10));
+                    gbc.anchor = GridBagConstraints.NORTHEAST;
+                    logInPanel.add(forgotPassword, gbc);
+                    gbc.gridy++;
+                    forgotPassword.addMouseListener(new MouseAdapter() {
+                            @Override
+                            public void mouseClicked(MouseEvent e) {
+                                    openRestPassword();
+                            }
+
+                            @Override
+                            public void mouseEntered(MouseEvent e){
+                                    //when hovered over it will change
+                                    forgotPassword.setForeground(new Color(235, 64, 52));
+
+                            }
+                            @Override
+                            public void mouseExited(MouseEvent e){
+                                    //when mouse not hovered over it
+                                    forgotPassword.setForeground(Color.BLACK);
+                            }
+                    });
+
 
 
                     //password error field
@@ -257,6 +284,7 @@ public class LoginInterface {
                     logInButton.setForeground(Color.WHITE);
                     logInButton.setPreferredSize(new Dimension(200,30));
                     logInButton.setFocusPainted(false); //removes the focus border
+                    gbc.anchor = GridBagConstraints.CENTER;
                     logInPanel.add(logInButton,gbc);
                     logInButton.addActionListener(new ActionListener() {
                             @Override
@@ -269,13 +297,16 @@ public class LoginInterface {
                     JLabel backLabel = new JLabel("Go Back");
                     Font labelFont = new Font("inter", Font.PLAIN, 10);
                     backLabel.setFont(labelFont);
+                    gbc.anchor = GridBagConstraints.CENTER;
                     logInPanel.add(backLabel, gbc);
                     gbc.gridy++;
                     backLabel.addMouseListener(new MouseAdapter() {
                             @Override
                             public void mouseClicked(MouseEvent e) {
+
                                     openWelcomePage();
                             }
+
                             @Override
                             public void mouseEntered(MouseEvent e){
                                     //when mouse is hovered over the text it will change colour
@@ -287,6 +318,7 @@ public class LoginInterface {
                                     backLabel.setForeground(Color.BLACK);
                             }
                     });
+
                     // Defer enabling focus until after the UI is fully initialized
                     SwingUtilities.invokeLater(() -> {
                             emailField.setFocusable(true);
@@ -405,9 +437,9 @@ public class LoginInterface {
 
     }
 
-    static void openLoggedInChat(){
-            LoggedInChat chatbot = new LoggedInChat();
-            chatbot.showChatBot();
+    static void openRestPassword(){
+            ResetPassword resetPassword = new ResetPassword();
+            resetPassword.showRP();
     }
 
 

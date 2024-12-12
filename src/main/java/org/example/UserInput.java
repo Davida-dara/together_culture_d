@@ -5,25 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UserInput {
-//    public static void store(String username, String email, String password) {
-//        try{
-//            //open a file writer with append mode (to append new users)
-//            FileWriter fileWriter = new FileWriter("users.txt", true);
-//            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-//            //write user data to the file
-//            bufferedWriter.write(username);
-//            bufferedWriter.write("");
-//            bufferedWriter.write(email);
-//            bufferedWriter.write(" ");
-//            bufferedWriter.write(password);
-//            bufferedWriter.newLine();
-//
-//            //closing the buffered writer
-//            bufferedWriter.close();
-//        }catch(IOException e){
-//            e.printStackTrace();
-//        }
-//    }
+
 
 
     public static void store(String username, String email, String password) {
@@ -105,34 +87,67 @@ public static ArrayList<HashMap<String, String>> readingFile() {
 }
 
 
-    public static boolean updating(Integer i, String email, String newPass){
-        try{
-           //read the content fo the file into the memory
-           File file = new File("users.txt");
-           BufferedReader reader = new BufferedReader(new FileReader(file));
-           StringBuilder contentBuilder = new StringBuilder();
-           String line;
-           int lineNumber  = 1;
-           while((line = reader.readLine()) != null){
-               //check if this is the line to update
-               if(lineNumber == i){
-                   line = email + " " + newPass;
-               }
-               contentBuilder.append(line).append("\n");
-               lineNumber++;
-           }
-           reader.close();
-           // write teh updated content back to the file
-            FileWriter writer  = new FileWriter(file);
-            writer.write(contentBuilder.toString());
-            writer.close();
-            return true;
-        }catch(IOException e){
-            System.out.println("An error occurred while updating the file: " + e.getMessage());
-            e.printStackTrace();
+//    public static boolean updating(Integer i, String email, String newPass, String pass){
+//        try{
+//           //read the content fo the file into the memory
+//           File file = new File("users.txt");
+//           BufferedReader reader = new BufferedReader(new FileReader(file));
+//           StringBuilder contentBuilder = new StringBuilder();
+//           String line;
+//           int lineNumber  = 1;
+//           while((line = reader.readLine()) != null){
+//               //check if this is the line to update
+//               if(lineNumber == i){
+//                   line = email + " " + newPass;
+//               }
+//               contentBuilder.append(line).append("\n");
+//               lineNumber++;
+//           }
+//           reader.close();
+//           // write teh updated content back to the file
+//            FileWriter writer  = new FileWriter(file);
+//            writer.write(contentBuilder.toString());
+//            writer.close();
+//            return true;
+//        }catch(IOException e){
+//            System.out.println("An error occurred while updating the file: " + e.getMessage());
+//            e.printStackTrace();
+//
+//        }
+//        return false;
+//
+//    }
+public static boolean update(int lineNumber, String username, String email, String newPassword) {
+    try {
+        File file = new File("users.txt");
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        StringBuilder contentBuilder = new StringBuilder();
+        String line;
+        int currentLine = 1;
 
+        while ((line = reader.readLine()) != null) {
+            if (currentLine == lineNumber) {
+                // Update the line
+                line = username + "," + email + "," + newPassword;
+            }
+            contentBuilder.append(line).append("\n");
+            currentLine++;
         }
-        return false;
+        reader.close();
 
+        // Write the updated content back to the file
+        FileWriter writer = new FileWriter(file);
+        writer.write(contentBuilder.toString());
+        writer.close();
+
+        return true;
+    } catch (IOException e) {
+        System.out.println("An error occurred while updating the file: " + e.getMessage());
+        e.printStackTrace();
     }
+    return false;
+}
+
+
+
 }

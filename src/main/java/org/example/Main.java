@@ -22,7 +22,6 @@ public class Main {
                 LoggedInChat testing = new LoggedInChat();
                 testing.processConversation();
                 showGUI();
-//
            }
         });
     }

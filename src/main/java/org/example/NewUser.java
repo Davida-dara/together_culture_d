@@ -54,11 +54,6 @@ public class NewUser {
             boolean hasUpperCase = username.matches(".*[A-Z].*");
             boolean hasLowerCase = username.matches(".*[a-z].*");
             boolean hasDigit = username.matches(".*\\d.*");
-        System.out.println("Username Length Valid: " + (username.length() > 3));
-        System.out.println("Contains Uppercase: " + hasUpperCase);
-        System.out.println("Contains Lowercase: " + hasLowerCase);
-        System.out.println("Contains Digit: " + hasDigit);
-
             // Username must have at least one uppercase, one lowercase, and one digit
             return hasUpperCase && hasLowerCase && hasDigit;
 

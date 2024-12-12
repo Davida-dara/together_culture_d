@@ -9,7 +9,10 @@ import java.util.HashMap;
 
 import static org.example.LoginInterface.addBorder;
 import static org.example.MainInterface.createRoundedButton;
+import static org.example.MainInterface.openLogIn;
 import static org.example.SignupInterface.setErrorText;
+import static org.example.UserInput.readingFile;
+import static org.example.UserInput.update;
 
 public class ResetPassword {
      private static String userEmailText = "";
@@ -71,6 +74,7 @@ public class ResetPassword {
                     userNameText = userNameField.getText().trim();
 
                 }
+
             }
         });
         mainPanel.add(userNameField, panelGBC);
@@ -117,7 +121,9 @@ public class ResetPassword {
                     userEmail.setForeground(Color.GRAY);
                     userEmailText = userEmail.getText().trim();
 
+
                 }
+
             }
         });
 
@@ -131,23 +137,43 @@ public class ResetPassword {
         mainPanel.add(emailErrorLabel, panelGBC);
         panelGBC.gridy++;
 
-
-        //creating the password  text-field
+        //creating the email text field
         JTextField newPasswordField = new JTextField(15);
-        //hiding the password text-field
-        newPasswordField.setBackground(new Color (mainPanel.getBackground().getRed(),
-                mainPanel.getBackground().getGreen(), mainPanel.getBackground().getBlue(),0));
-        Border defaultPadding = BorderFactory.createEmptyBorder(10,30,10,30);
-        Border defaultBorderColour = BorderFactory.createLineBorder(new Color(mainPanel.getBackground().getRed(),
-                mainPanel.getBackground().getGreen(), mainPanel.getBackground().getBlue(),0));
-        newPasswordField.setBorder(BorderFactory.createCompoundBorder(defaultBorderColour, defaultPadding));
-        //setting the place-holder text
-        newPasswordField.setText("Enter new password");
-        //setting the colour for the place-holder text
-        newPasswordField.setForeground(new Color(mainPanel.getBackground().getRed(),
-                mainPanel.getBackground().getGreen(), mainPanel.getBackground().getBlue(),0));
-        //setting the user entry text colour
-        //newPasswordField.setForeground(Color.BLACK);
+        //making the background transparent
+        newPasswordField.setBackground(Color.white);
+        //user entry text color
+        newPasswordField.setForeground(Color.BLACK);
+        //set the placeholder text
+        newPasswordField.setText("Enter your new password");
+        //set the placeholder text colour
+        newPasswordField.setForeground(Color.GRAY);
+        //adding the border
+        addBorder(newPasswordField);
+        //setting the border
+        newPasswordField.setBorder(BorderFactory.createCompoundBorder(lineBorder,paddingBorder));
+        //adding the focus listener for the text-field
+        newPasswordField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                //clear the text field only if it has the default text
+                if(newPasswordField.getText().equals("Enter your new password")){
+                    newPasswordField.setText("");//clearing the text
+                    newPasswordField.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                //sets the default text only if the text field is empty
+                if (newPasswordField.getText().trim().isEmpty()) {
+                    newPasswordField.setText("Enter your new password");
+                    newPasswordField.setForeground(Color.GRAY);
+                    userPasswordText = newPasswordField.getText().trim();
+                }
+
+            }
+        });
+
         mainPanel.add(newPasswordField, panelGBC);
         panelGBC.gridy++;
         //adding the password error message label
@@ -158,21 +184,23 @@ public class ResetPassword {
         mainPanel.add(passwordErrorLabel, panelGBC);
         panelGBC.gridy++;
 
-        MainInterface.RoundedButton resetButton = createRoundedButton("Reset", new Color(mainPanel.getBackground().getRed(),
-                mainPanel.getBackground().getGreen(), mainPanel.getBackground().getBlue(),0),Color.WHITE, new Dimension(100,30));
+        MainInterface.RoundedButton resetButton = createRoundedButton("Reset", new Color(72, 19, 38),Color.WHITE, new Dimension(100,30));
         mainPanel.add(resetButton, panelGBC);
         panelGBC.gridy++;
         //adding the mouse listener for the button to check of the email exists and then run the password verifications
         resetButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                System.out.println("Reset button clicked!");
                 emailAndPasswordChecks(userNameField, userNameErrorLabel, userEmail, emailErrorLabel, newPasswordField, passwordErrorLabel, mainPanel);
             }
         });
 
+
         // Defer enabling focus until after the UI is fully initialized
         SwingUtilities.invokeLater(() -> {
             userEmail.setFocusable(true);
+            userNameField.setFocusable(true);
             newPasswordField.setFocusable(true);
             mainPanel.requestFocusInWindow(); // Redirect focus away from the text field
         });
@@ -186,145 +214,115 @@ public class ResetPassword {
         frame.setVisible(true);
 
     }
-    public static void  resettingPassword(String newPass, String userEmail){
-        ArrayList<HashMap<String, String>> users = UserInput.readingFile();
-        boolean userExists = false;
-        //this will check if the username entered exists in the user text file
-        for(int i = 1; i<users.size(); i++){
-            if(userEmail.equals(users.get(i).get("email"))&& !userExists){
-                userExists = true;
-                users.get(i).put("password", newPass);
 
-                UserInput.updating(i, users.get(i).get("email"), newPass);
+    public static void resettingPassword(String username, String email, String newPassword) {
+        System.out.println("Resetting password called with:");
+        System.out.println("Username: " + username);
+        System.out.println("Email: " + email);
+        System.out.println("New Password: " + newPassword);
+
+        // Validate inputs
+        if (username == null || email == null || newPassword == null ||
+                username.trim().isEmpty() || email.trim().isEmpty() || newPassword.trim().isEmpty()) {
+            System.out.println("Error: Invalid input. Please provide valid username, email, and password.");
+            return;
+        }
+
+        // Retrieve all users from the file
+        ArrayList<HashMap<String, String>> users = readingFile();
+
+        // Find the user with matching username and email
+        boolean userFound = false;
+        int lineIndex = 0;
+
+        for (int i = 0; i < users.size(); i++) {
+            HashMap<String, String> user = users.get(i);
+            if (username.equals(user.get("username")) && email.equals(user.get("email"))) {
+                userFound = true;
+                lineIndex = i + 1;  // File lines are 1-based
+                break;
             }
         }
 
+        if (!userFound) {
+            System.out.println("No matching user found for username: " + username + " and email: " + email);
+            System.out.println("Password reset failed. No matching user found.");
+            return;
+        }
+
+        // Call updateUser to update the password
+        boolean success = update(lineIndex, username, email, newPassword);
+        if (success) {
+            System.out.println("Password reset successfully for user: " + username);
+        } else {
+            System.out.println("Password reset failed during file update.");
+        }
     }
+
+
+
+
 
     public static void emailAndPasswordChecks(JTextField usernameField, JLabel usernameErrorMessage, JTextField emailField, JLabel emailErrorMessage,
                                               JTextField passwordField, JLabel passwordErrorMessage, JPanel mainPanel){
-        ArrayList<HashMap<String, String>> users = UserInput.readingFile();
+        ArrayList<HashMap<String, String>> users = readingFile();
 
         ExistingUser existingUser = new ExistingUser();
-        //username checks
+
+        // Username checks
         String userNameInput = usernameField.getText().trim();
         boolean isUserNamePlaceHolder = userNameInput.equals("Enter your username");
         boolean isUserNameEmpty = userNameInput.isEmpty();
         boolean isExistingUserName = existingUser.existingUsername(userNameInput);
         boolean isValidUserName = NewUser.isValidUsername(userNameInput);
         String userNameError = "";
-        if(isUserNamePlaceHolder || isUserNameEmpty){
-            // checks if the username text field value is empty or the placeholder text
-            //if true outputs the following error
-            userNameError = "Username required";
-        }else if(!isExistingUserName){
-            //checks if the username does not exist
-            //if true will output the following error
-            userNameError = "Unrecognised username";
 
-        } else if(!isValidUserName){
-            //checks if the username entered does not follow the set requirements
-            //if true outputs the following error
+        if (isUserNamePlaceHolder || isUserNameEmpty) {
+            userNameError = "Username required";
+        } else if (!isExistingUserName) {
+            userNameError = "Unrecognised username";
+        } else if (!isValidUserName) {
             userNameError = "Invalid username";
         }
+        setErrorText(!isUserNamePlaceHolder && !isUserNameEmpty && isExistingUserName && isValidUserName, usernameErrorMessage, userNameError, mainPanel);
+
+        // Email checks
         String userEmailInput = emailField.getText().trim();
         boolean isEmailPlaceHolder = userEmailInput.equals("Enter your email");
         boolean isEmailEmpty = userEmailInput.isEmpty();
-        boolean isEmailExistingEmail = existingUser.userExistingEmail(userEmailInput);
-        boolean isValidUserEmail = NewUser.isValidEmail(userEmailInput);
-        String emailError = null;
-        if(isEmailPlaceHolder || isEmailEmpty){
-            //checks if the data in the email field is the placeholder text or is empty
-            //if true outputs the following error
+        boolean isValidEmail = NewUser.isValidEmail(userEmailInput);
+        boolean isExistingEmail = existingUser.userExistingEmail(userEmailInput);
+        String emailError = "";
+
+        if (isEmailPlaceHolder || isEmailEmpty) {
             emailError = "Email required";
+        } else if (!isExistingEmail) {
+            emailError = "Unrecognised email";
+        } else if (!isValidEmail) {
+            emailError = "Invalid email format";
         }
-        setErrorText(!isEmailPlaceHolder && !isEmailEmpty ,emailErrorMessage, emailError,mainPanel);
+        setErrorText(!isEmailPlaceHolder && !isEmailEmpty && isExistingEmail && isValidEmail, emailErrorMessage, emailError, mainPanel);
 
-        if(!isEmailEmpty) {
-            //error message transparent if the email is not empty
-            emailErrorMessage.setForeground(new Color(mainPanel.getBackground().getRed(),
-                    mainPanel.getBackground().getGreen(), mainPanel.getBackground().getBlue(),0));
-
-            if(!isEmailExistingEmail){
-                emailError = "Email doesn't exist";
-
-            } else if (!isValidUserEmail) {
-                emailError = "Invalid email";
-
-            }
-
-            if (isEmailExistingEmail) {
-                emailErrorMessage.setForeground(new Color(mainPanel.getBackground().getRed(),
-                        mainPanel.getBackground().getGreen(),
-                        mainPanel.getBackground().getBlue(), 0));
-                Border changeBorderColour = BorderFactory.createLineBorder(new Color(72, 19, 38));
-                Border defaultPadding = BorderFactory.createEmptyBorder(10, 30, 10, 30);
-                //changing the colour of the text field
-                passwordField.setBorder(BorderFactory.createCompoundBorder(changeBorderColour, defaultPadding));
-                //changing the colour of the place-holder
-                passwordField.setText("Enter new password");
-                passwordField.setForeground(Color.GRAY);
-                //setting the text colour for the user entry
-                passwordField.setForeground(Color.BLACK);
-                //setting the background colour for the text-field
-                passwordField.setBackground(Color.BLACK);
-                //adding the border changes
-                addBorder(passwordField);
-                passwordField.addFocusListener(new FocusListener() {
-                    @Override
-                    public void focusGained(FocusEvent e) {
-                        //clear the text field only if it has the default text
-                        if (passwordField.getText().equals("Enter your new password")) {
-                            passwordField.setText("");//clearing the text
-                            passwordField.setForeground(Color.BLACK);
-                        }
-                    }
-                        @Override
-                        public void focusLost (FocusEvent e){
-                            //sets the default text only if the text field is empty
-                            if (passwordField.getText().trim().isEmpty()) {
-                                passwordField.setText("Enter your new password");
-                                passwordField.setForeground(Color.GRAY);
-                                userPasswordText = passwordField.getText().trim();
-
-                            }
-                        }
-
-                });
-
-
-            } else {
-                setErrorText(isEmailExistingEmail, emailErrorMessage, emailError, mainPanel);
-            }
-        } else {
-            setErrorText(isEmailExistingEmail && isValidUserEmail, emailErrorMessage, emailError, mainPanel);
-        }
-
-        //password checks
+        // Password checks
         String userPasswordInput = passwordField.getText().trim();
-        boolean isPasswordPlaceHolder = userEmailInput.equals("Enter new password");
         boolean isPasswordEmpty = userPasswordInput.isEmpty();
-        boolean isExistingPassword = existingUser.userExistingPswd(users,userNameInput,userPasswordInput, userEmailInput);
-        boolean isValidUserPassword = NewUser.isValidPassword(userPasswordInput);
-        String passwordError = null;
+        String passwordError = "";
 
-        if(isPasswordPlaceHolder || isPasswordEmpty){
-            //checks if the password text-field's value is the place-holder os is empty
-            //if true outputs the following error message
-            passwordError = "new password required";
-        }else if (isExistingPassword){
-            //if thr new password entered exists the following error message will be outputted
-            passwordError = "Password already exists";
-
-        } else if (isValidUserPassword){
-            //if the password doesn't exist however doesn't follow the requirements
-            //the following error messages will be displayed
-            passwordError = "Invalid password";
+        if (isPasswordEmpty) {
+            passwordError = "Password required";
         }
-        setErrorText(!isPasswordPlaceHolder && !isPasswordEmpty && isExistingPassword && isValidUserPassword,passwordErrorMessage, passwordError, mainPanel);
+        setErrorText(!isPasswordEmpty, passwordErrorMessage, passwordError, mainPanel);
 
-
+        // Proceed with resetting the password if all validations pass
+        if (isValidUserName && isExistingUserName && isValidEmail && isExistingEmail && !isPasswordEmpty) {
+            ResetPassword.resettingPassword(userNameInput, userEmailInput, userPasswordInput); // Correctly pass inputs in order
+        }
     }
+
+    static void openLoggedInChat(){
+        LoggedInChat lIC = new LoggedInChat();
+                lIC.showChatBot();
+     }
 
 
 
