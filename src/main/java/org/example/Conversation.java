@@ -349,6 +349,7 @@ public class Conversation {
         return "Sorry there was an error loading your response, could you retype your question?";
     }
 
+
     //method to determine the topic of discussion /focus
     public String select_topic() {
         String focus = "";
@@ -367,6 +368,7 @@ public class Conversation {
         System.out.println(focus);
         return null;
     }
+
 
     public String general_response() { //general response for when the chatbot does not understand a user's question
         return "I'm not quite sure what you mean? can you rephrase your question.";
