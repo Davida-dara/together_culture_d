@@ -19,9 +19,14 @@ public class Main {
 //
 //                // Call the non-static method on the instance
 //                loggedInChat.showChatBot();
-                LoggedInChat testing = new LoggedInChat();
-                testing.processConversation();
-                showGUI();
+                LoggedInChat botting = new LoggedInChat();
+                botting.showChatBot();
+         //       botting.processConversation();
+
+         //       LoggedInChat testing = new LoggedInChat();
+        //        testing.processConversation();
+            //    showGUI();
+
            }
         });
     }

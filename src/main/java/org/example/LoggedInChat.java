@@ -13,32 +13,43 @@ import java.net.URI;
 import static org.example.StayLoggedOut.roundTextFieldBorder;
 
 public class LoggedInChat {
+    //<<<<<<< Updated upstream
     private String userText = "";
 
     // Class to represent chat history
-class Chat {
-    private String name;
-    private int id;
+    //   class Chat {
+    //       private String name;
+    public org.example.RoundedTextField textEntryField = new org.example.RoundedTextField(40, 20);
+    //      private int id;
+    //=======
 
-    public Chat(String name, int id) {
-        this.name = name;
-        this.id = id;
-    }
+    // Class to represent chat history
+    //   private String userText = "";
+//>>>>>>> Stashed changes
 
-    public String getName() {
-        return name;
-    }
+    class Chat {
+        private String name;
+        private int id;
 
-    public int getId() {
-        return id;
-    }
+        public Chat(String name, int id) {
+            this.name = name;
+            this.id = id;
+        }
 
-    @Override
-    public String toString() {
-        // Display name in the JComboBox
-        return name;
+        public String getName() {
+            return name;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        @Override
+        public String toString() {
+            // Display name in the JComboBox
+            return name;
+        }
     }
-}
 
     // Class to represent FAQs
     class FAQ {
@@ -65,67 +76,67 @@ class Chat {
         }
     }
 
-        // Custom renderer for rounded items
-         class CustomComboBoxRenderer extends BasicComboBoxRenderer {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    // Custom renderer for rounded items
+    class CustomComboBoxRenderer extends BasicComboBoxRenderer {
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
-                // Customize colors and font
-                if (isSelected) {
-                    label.setBackground(new Color(255, 100, 100));
-                    label.setForeground(Color.WHITE);
-                } else {
-                    label.setBackground(Color.WHITE);
-                    label.setForeground(Color.BLACK);
-                }
-
-                // Make the background transparent for smoother rounded edges
-                label.setOpaque(true);
-                label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-
-                return label;
+            // Customize colors and font
+            if (isSelected) {
+                label.setBackground(new Color(255, 100, 100));
+                label.setForeground(Color.WHITE);
+            } else {
+                label.setBackground(Color.WHITE);
+                label.setForeground(Color.BLACK);
             }
+
+            // Make the background transparent for smoother rounded edges
+            label.setOpaque(true);
+            label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+
+            return label;
+        }
+    }
+
+    // Custom rounded border class
+    class RoundedBorder extends AbstractBorder {
+        private final int radius;
+
+        public RoundedBorder(int radius) {
+            this.radius = radius;
         }
 
-        // Custom rounded border class
-         class RoundedBorder extends AbstractBorder {
-            private final int radius;
-
-            public RoundedBorder(int radius) {
-                this.radius = radius;
-            }
-
-            @Override
-            public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-                Graphics2D g2 = (Graphics2D) g;
-                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                g2.setColor(Color.GRAY);
-                g2.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
-            }
-
-            @Override
-            public Insets getBorderInsets(Component c) {
-                return new Insets(radius / 2, radius / 2, radius / 2, radius / 2);
-            }
-
-            @Override
-            public Insets getBorderInsets(Component c, Insets insets) {
-                insets.left = insets.right = insets.top = insets.bottom = radius / 2;
-                return insets;
-            }
+        @Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            Graphics2D g2 = (Graphics2D) g;
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            g2.setColor(Color.GRAY);
+            g2.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
         }
 
+        @Override
+        public Insets getBorderInsets(Component c) {
+            return new Insets(radius / 2, radius / 2, radius / 2, radius / 2);
+        }
 
-    public  void showChatBot(){
-     //   processConversation();
+        @Override
+        public Insets getBorderInsets(Component c, Insets insets) {
+            insets.left = insets.right = insets.top = insets.bottom = radius / 2;
+            return insets;
+        }
+    }
+
+
+    public void showChatBot() {
+        //   processConversation();
 
         //creating the frame
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         //creating the main panel
-        JPanel mainPanel  = new JPanel(new BorderLayout());
+        JPanel mainPanel = new JPanel(new BorderLayout());
         mainPanel.setBackground(new Color(255, 134, 148));
 
         // Create a container panel for the sidePanel and logoPanel
@@ -137,14 +148,14 @@ class Chat {
         JPanel sidePanel = new JPanel(new BorderLayout());
         sidePanel.setBackground(new Color(252, 73, 97));
         int customWidth = 250;
-        sidePanel.setPreferredSize(new Dimension(customWidth,screenSize.height));
+        sidePanel.setPreferredSize(new Dimension(customWidth, screenSize.height));
         horizontalContainer.add(sidePanel, BorderLayout.WEST);
         //creating a panel for the image that will go inside the side panel
         JPanel newChatButtonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         newChatButtonPanel.setOpaque(false);//no background colour
         //loading the image
         ImageIcon newChatIcon = new ImageIcon("src/main/java/org/example/newChat.png");
-        Image scaledNewChatImage = newChatIcon.getImage().getScaledInstance(50,50,Image.SCALE_SMOOTH);
+        Image scaledNewChatImage = newChatIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         newChatIcon = new ImageIcon(scaledNewChatImage);
         //adding the image to a label
         JLabel newChatImageLabel = new JLabel(newChatIcon);
@@ -174,34 +185,35 @@ class Chat {
         // Add ActionListener to toggle the side panel
         hideNavButton.addActionListener(new ActionListener() {
             boolean isSidePanelVisible = true; // Track visibility state
+
             @Override
             public void actionPerformed(ActionEvent e) {
-                    // Toggle state
-                    isSidePanelVisible = !isSidePanelVisible;
+                // Toggle state
+                isSidePanelVisible = !isSidePanelVisible;
 
-                    // Hide or show the side panel
-                    sidePanel.setVisible(isSidePanelVisible);
+                // Hide or show the side panel
+                sidePanel.setVisible(isSidePanelVisible);
 
-                    // Optionally adjust the button icon or background color
-                    if (isSidePanelVisible) {
-                        hideNavButton.setIcon(new ImageIcon(scaledHideNavImage)); // Use original icon
-                        hideNavButtonContainer.setBackground(new Color(252, 73, 97)); // Restore background
-                    } else {
-                        hideNavButton.setIcon(new ImageIcon(scaledHideNavImage)); // Optionally use a "show" icon
-                        hideNavButtonContainer.setBackground(new Color(mainPanel.getBackground().getRed(), mainPanel.getBackground().getGreen(), mainPanel.getBackground().getBlue(), 0)); // Transparent background
-                    }
-
-                    // Refresh the layout
-                    frame.revalidate();
-                    frame.repaint();
+                // Optionally adjust the button icon or background color
+                if (isSidePanelVisible) {
+                    hideNavButton.setIcon(new ImageIcon(scaledHideNavImage)); // Use original icon
+                    hideNavButtonContainer.setBackground(new Color(252, 73, 97)); // Restore background
+                } else {
+                    hideNavButton.setIcon(new ImageIcon(scaledHideNavImage)); // Optionally use a "show" icon
+                    hideNavButtonContainer.setBackground(new Color(mainPanel.getBackground().getRed(), mainPanel.getBackground().getGreen(), mainPanel.getBackground().getBlue(), 0)); // Transparent background
                 }
+
+                // Refresh the layout
+                frame.revalidate();
+                frame.repaint();
+            }
         });
 
         // Add the hideNavButtonContainer directly to the main panel
         mainPanel.add(hideNavButtonContainer, BorderLayout.WEST);
 
         // profile page button
-        JButton profileButton= new JButton();
+        JButton profileButton = new JButton();
         profileButton.setBorderPainted(false); // Remove button border
         profileButton.setContentAreaFilled(false); // Remove background
         profileButton.setFocusPainted(false); // Remove focus border
@@ -209,7 +221,7 @@ class Chat {
 
         // Set the icon for the button
         //loading the image
-        ImageIcon profileIcon =  new ImageIcon("src/main/java/org/example/profile.png");
+        ImageIcon profileIcon = new ImageIcon("src/main/java/org/example/profile.png");
         Image scaledImage = profileIcon.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
         profileButton.setIcon(new ImageIcon(scaledImage));
 
@@ -239,7 +251,7 @@ class Chat {
         chatHistoryDropdown.setRenderer(new CustomComboBoxRenderer());
 
         // Apply rounded border
-       // chatHistoryDropdown.setBorder(new RoundedBorder(15)); // Adjust radius as needed
+        // chatHistoryDropdown.setBorder(new RoundedBorder(15)); // Adjust radius as needed
 
         chatHistoryDropdown.setPreferredSize(new Dimension(200, 70));
         chatHistoryDropdown.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -267,21 +279,21 @@ class Chat {
                         " directs you to the right places to buy an event ticket or to become a member on the website, and allows you to book a workspace"),
                 new FAQ("Where and how to book an event?", "To be able to book an event you go to the together culture website by pressing on the logo, " +
                         "go to Upcoming Events under Events section."),
-                new FAQ("How to become a member?","To be able to become a member you can go to the website by clicking on the logo displayed, " +
+                new FAQ("How to become a member?", "To be able to become a member you can go to the website by clicking on the logo displayed, " +
                         "on the website and click on the membership button in the navigation bar"),
-                new FAQ("Where is Together Culture?","Together Culture is located in cambridge, the address is," +
+                new FAQ("Where is Together Culture?", "Together Culture is located in cambridge, the address is," +
                         "5 Fitzroy Street, Cambridge, CB1 1ER"),
-                new FAQ ("What are the opening/closing times?", "We are open from 12pm to 5 pm Monday to Friday"),
-                new FAQ  ("How do i change my password?", "If you  are logged in, you press on the profile button -> Reset Password button, " +
+                new FAQ("What are the opening/closing times?", "We are open from 12pm to 5 pm Monday to Friday"),
+                new FAQ("How do i change my password?", "If you  are logged in, you press on the profile button -> Reset Password button, " +
                         "if not logged in and trying to log in there will be a Forgot password button located under the password"),
-                new FAQ ("How do i log out ?", "Press on the Profile button -> Log out Button")
+                new FAQ("How do i log out ?", "Press on the Profile button -> Log out Button")
         };
         JComboBox<FAQ> faqDropDown = new JComboBox<>(faqOptions);
         // Apply custom renderer
         faqDropDown.setRenderer(new CustomComboBoxRenderer());
 
         // Apply rounded border
-       // faqDropDown.setBorder(new RoundedBorder(15)); // Adjust radius as needed
+        // faqDropDown.setBorder(new RoundedBorder(15)); // Adjust radius as needed
         faqDropDown.setPreferredSize(new Dimension(200, 70));
         faqDropDown.setFont(new Font("Arial", Font.PLAIN, 18));
         faqDropDown.setFocusable(false);
@@ -311,7 +323,7 @@ class Chat {
         dropdownContainer.add(Box.createVerticalStrut(10));
         dropdownContainer.add(faqPanel);
 
-       // Create a container panel for bottom alignment
+        // Create a container panel for bottom alignment
         JPanel bottomContainer = new JPanel(new BorderLayout());
         bottomContainer.setOpaque(false); // Transparent background
         bottomContainer.setBorder(BorderFactory.createEmptyBorder(0, 0, 25, 0)); // Adjust padding to raise position
@@ -329,15 +341,13 @@ class Chat {
         contentContainer.setOpaque(false);
 
 
-
-
         //component panel
         //creating a panel that will have the different components
         JPanel textFieldPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;//columnn index (centered horizontally)
         gbc.gridy = 0;//row index (first row)
-        gbc.insets = new Insets(10,10,10,10);
+        gbc.insets = new Insets(10, 10, 10, 10);
         gbc.fill = GridBagConstraints.NONE; //do not stretch the component
         gbc.anchor = GridBagConstraints.CENTER; //center the component
         textFieldPanel.setOpaque(false);
@@ -345,27 +355,28 @@ class Chat {
 
         //adding the logo panel to the page
         JPanel logoPanel = new JPanel();
-        logoPanel.setPreferredSize(new Dimension(50,220));
-        logoPanel.setBackground(new Color(mainPanel.getBackground().getRed(), mainPanel.getBackground().getGreen(), mainPanel.getBackground().getBlue(),0));
+        logoPanel.setPreferredSize(new Dimension(50, 220));
+        logoPanel.setBackground(new Color(mainPanel.getBackground().getRed(), mainPanel.getBackground().getGreen(), mainPanel.getBackground().getBlue(), 0));
         logoPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
         //create a JLabel for the text
         //using HTML for line breaks and colours
         JLabel logoLabel = new JLabel("<html><a href = ''><span style='text-decoration:none;'<font color='#481326'>Together<br>Culture<br></font><font color ='#ECD7DF'>Cambridge</font></a></span></html>");
-        logoLabel.setFont(new Font("inter",Font.BOLD, 55));
+        logoLabel.setFont(new Font("inter", Font.BOLD, 55));
         logoPanel.add(logoLabel);
         //adding a mouse listener to open a URL when the press on the label
         //add the logo panel to the top left corner of the  main panel
         logoLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                try{
+                try {
                     Desktop.getDesktop().browse(new URI("https://www.togetherculture.com"));
-                }catch(IOException | java.net.URISyntaxException ex){
+                } catch (IOException | java.net.URISyntaxException ex) {
                     ex.printStackTrace();
                 }
             }
+
             @Override
-            public void mouseEntered(MouseEvent e){
+            public void mouseEntered(MouseEvent e) {
                 logoLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));// change cursor to hand
             }
         });
@@ -373,18 +384,53 @@ class Chat {
         // Add spacing between the logoPanel and the text field
         contentContainer.add(Box.createVerticalStrut(20));
 
-        //Creating the text-field where the user will initially type in there question to the chatbot
-        org.example.RoundedTextField textEntryField = new org.example.RoundedTextField(40,20);
+        //clearing the textfield from the default text when the user presses on the textfield
+        textEntryField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                //clear the textfield only if the textfield is till empty (displaying default text)
+                if (textEntryField.getText().equals("Type a question...")) {
+                    textEntryField.setText("");//clearing the text
+                    textEntryField.setForeground(Color.BLACK);//making the text colour black
+
+
+                    textEntryField.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            //get text from the textfield
+                            userText = textEntryField.getText().trim();
+                            textEntryField.setText("");
+                            //set and display output label
+                            processConversation();
+                        }
+                    });
+
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                //if the textfield is still empty then the text will stay in grey
+                //it won't empty the textfield
+                if (textEntryField.getText().trim().isEmpty()) {
+                    textEntryField.setText("Type a question...");
+                    textEntryField.setForeground(Color.WHITE);
+                }//  else processConversation();
+
+            }
+        });
+
+
         //setting the preferred size
-        textEntryField.setPreferredSize(new Dimension(250,40));
+        textEntryField.setPreferredSize(new Dimension(250, 40));
         //setting the text-field background to transparent
         textEntryField.setBackground(new Color(mainPanel.getBackground().getRed(), mainPanel.getBackground().getGreen(),
-                mainPanel.getBackground().getBlue(),0));
+                mainPanel.getBackground().getBlue(), 0));
         //setting placeholder text and initial styles
         textEntryField.setText("Type a question...");
         textEntryField.setForeground(Color.WHITE);
         //Apply the initial white border
-        Border paddingBorder = BorderFactory.createEmptyBorder(10,20,10,20);
+        Border paddingBorder = BorderFactory.createEmptyBorder(10, 20, 10, 20);
         Border whiteBorder = BorderFactory.createLineBorder(Color.WHITE);
 
         //calling the addBorder method and parsing the text entry field to it
@@ -393,30 +439,11 @@ class Chat {
         textEntryField.setBorder(BorderFactory.createCompoundBorder(whiteBorder, paddingBorder));
         textEntryField.setFocusable(false);//disbale focus initially
 
-        //clearing the textfield from the default text when the user presses on the textfield
-        textEntryField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                //clear the textfield only if the textfield is till empty (displaying default text)
-                if(textEntryField.getText().equals("Type a question...")){
-                    textEntryField.setText("");//clearing the text
-                    textEntryField.setForeground(Color.BLACK);//making the text colour black
-                }
-            }
 
-            @Override
-            public void focusLost(FocusEvent e) {
-                //if the textfield is still empty then the text will stay in grey
-                //it won't empty the textfield
-                if(textEntryField.getText().trim().isEmpty()){
-                    textEntryField.setText("Type a question...");
-                    textEntryField.setForeground(Color.WHITE);
-                } else userText = textEntryField.getText().trim();
-
-            }
-        });
+        //    retrieveInfromation();
         //prevent the 'textEntryField' from being focused initially
         textEntryField.setFocusable(false);
+        //   getTextFromTextfield(textEntryField);
         // Defer enabling focus until after the UI is fully initialized
         SwingUtilities.invokeLater(() -> {
             textEntryField.setFocusable(true);
@@ -454,17 +481,42 @@ class Chat {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
+        //    processConversation();
     }
 
-    public static void openProfileGUI(){
-    Profile showProfile = new Profile();
-    showProfile.showProfile();
+    public  void retrieveInfromation() {
+        String input;
+        textEntryField.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //get text from the textfield
+                userText = textEntryField.getText().trim();
+                textEntryField.setText("");
+                //set and display output label
+            }
+        });
+//return userText;
+    }
+
+    public static void openProfileGUI() {
+        Profile showProfile = new Profile();
+        showProfile.showProfile();
     }
 
     /////Backend////
-    public  void processConversation(){
-    Conversation talking = new Conversation();
-    talking.Conversation("When is event happening?");
- //   talking.select_topic();
-    };
+    public  String getTextFromTextfield() {
+        return userText;
+    }
+
+    public void processConversation() {
+        System.out.println(userText);
+        Conversation talking = new Conversation();
+        System.out.println(userText);
+        talking.Conversation(userText);
+        //      talking.Conversation("When is Tech talks event happening?");
+        //   talking.select_topic();
+    }
 }
+
+
+//};
