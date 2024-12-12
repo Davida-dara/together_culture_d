@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
+
 public class Conversation {
     private String text;
     private String discussion;
@@ -18,7 +19,12 @@ public class Conversation {
     private final static int MEMBERS = 3;
     private connection TGCDB;
     private static ArrayList<String> words = new ArrayList<String>();
+<<<<<<< Updated upstream
     public static String[] topics = {"bookings", "events", "memberships", "members", "workspaces"};
+=======
+    public static String[] topics = {"bookings", "events", "memberships", "members"};
+    private static ArrayList<String> availableRooms = new ArrayList<>();
+>>>>>>> Stashed changes
 
 
     public void Conversation(String text) {
@@ -52,9 +58,32 @@ public class Conversation {
         }
     }
 
+    public void populate_availableRoom_array() {
+        //Create array list that stores the room_id of available rooms
+        String tempRoom;
+        String output2 = "";
+        String query = "SELECT room_id FROM rooms WHERE is_available = 0;";
+        ResultSet result1 = TGCDB.ExecuteQuery(query);
+        try {
+            while (result1.next()) {
+                tempRoom = result1.getString("room_id");
+                //store row of table in an array
+                availableRooms.add(tempRoom);
+            }
+
+        } catch (SQLException e) {
+            sqlErrorMessage();
+            throw new RuntimeException(e);
+        }
+    }
+
     public void chatbot_logic() {
         //identifies the topic of discussion e.g. bookings , events etc..
         discussion = select_topic();
+        if (discussion == null) {
+            System.out.println("No topic of discussion was not found, please re-enter you question ");
+            return; // Exit or handle the null case
+        }
         //Case statement to determine the next course of action
         switch (discussion) {
             case "booking":
@@ -63,8 +92,11 @@ public class Conversation {
                     String tempWord = words.get(m).toLowerCase();
                     if (tempWord.contains("event")) {
                         //event booking sql statements
+                        String b =  book_event();
+                        book_event();
                     } else if ((tempWord.contains("workspace")) || (tempWord.contains("space"))) {
                         //workspace booking sql statements
+                        bookWorkspace();
                     }
                 }
                 break;
@@ -80,9 +112,48 @@ public class Conversation {
             case "members":
                 //members sql statements
                 break;
+            default: {
+                 System.out.println("No topic of discussion was not found, please re-enter you question ");
+                 break;
+               //  return resultingOutput;
+            }
         }
     }
+    public String converse(String question) {
+        //get input string
 
+        String response = LoggedInChat.getTextFromTextfield(); //CHANGE FOR stay signedout chat;
+       // if (response.contains())
+        return null;
+    }
+
+
+    public void bookWorkspace() {
+        String output2 = "";
+        if (text.contains("book a room")) {
+            populate_availableRoom_array();
+            String output1 = "Here's a list of all the rooms available for booking";
+
+            //display list of all available rooms for booking
+            for (int i = 0; i < availableRooms.size(); i++) {
+                output2 = (i + 1) + ". " +  availableRooms.get(i);
+            }
+            System.out.println(output1);
+            //ask which rooms,  user would like to book
+            String question = "Please select from the list of rooms above, which room you would like to book.";
+            converse(question);
+            //check if room is available
+            //ask time of booking
+            //ask duration of booking (max=4 hours)
+            //create room booking
+            //update wrokspace table
+           // converse(chatbotQuestion);
+        }
+    }
+    public String book_event() {
+        String output = "You can copy this link into your web browser to book onto our events: " + "\"https://www.togetherculture.com/events\"";
+        return output;
+    }
     public String chatbot_event_rules() {
         //if the input contains "how many" it calls the how_many_events method
         if (text.contains("how many")) {
@@ -100,7 +171,8 @@ public class Conversation {
         String query1, query2, query3;
         int rowCount = 0;
         //get the event name
-        String event_name = "Tech talks";
+       // String event_name = "Tech talks";
+
 
         //get the total number of events in the table
         query1 = "SELECT count(*) AS events_count FROM events;";
@@ -112,7 +184,7 @@ public class Conversation {
             System.out.println(rowCount);
         } catch (SQLException e) {
            // ..//  throw Exception (e);
-            //    return sqlErrorMessage();
+               return sqlErrorMessage();
         }
 
         //Create an array storing the list of events in the table
@@ -122,22 +194,26 @@ public class Conversation {
         String[] eventList = new String[rowCount];
         try {
             while (((result3.next()) && (loopCounter < rowCount))) {
-                eventList[loopCounter] = result3.getString("event_name");
+                eventList[loopCounter] = (result3.getString("event_name")).toLowerCase();
                 loopCounter++;
             }
 
-            for (int i = 0; i < eventList.length; i++) {
+          /*  for (int i = 0; i < eventList.length; i++) {
                 System.out.println(eventList[i]);
-            }
+            } */
         } catch (SQLException e) {
             return sqlErrorMessage();
         }
 
         //get event name
-        String[] tempWrds = text.split("");
+        String event_name = "";
+      //  String[] tempWrds = text.split("");
         for (String ename: eventList) {
-            int index = Arrays.binarySearch(tempWrds, ename);
+               if (text.contains(ename)) {
+                event_name = ename;
+            }
         }
+        System.out.println(event_name);
      /*   for (int i = 0; i < eventList.length; i++) {
          if (text.contains(eventList[i])) {
              event_name = eventList[i];
@@ -364,7 +440,7 @@ public class Conversation {
                 }
             }
         }
-        System.out.println(focus);
+    //    System.out.println(focus);
         return null;
     }
 
