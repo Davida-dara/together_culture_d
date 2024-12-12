@@ -11,10 +11,10 @@ public class connection {
     private static Connection db;
 
     //database Initializiation
-    public connection (String dbUrl, String adminName, String adminPass) {
-        this.dbUrl = dbUrl;
-        this.adminName = adminName;
-        this.adminPass = adminPass;
+    public  connection () {
+        this.dbUrl = "jdbc:mysql://localhost:3306/together_culture";
+        this.adminName = "tgcadmin";
+        this.adminPass = "1234tgc";
     }
 
     public boolean getConnected() {
@@ -50,7 +50,8 @@ public class connection {
             System.out.println("SQL statement executed successfully");
             return rs;
         } catch (Exception e) {
-            System.out.println("Could not execute the query statement. please rechek the statement");
+          //  throw new RuntimeException(e);
+            System.out.println("Could not execute the query statement. please recheck the statement");
         }
         return null;
     }

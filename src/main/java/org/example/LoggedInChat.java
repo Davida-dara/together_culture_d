@@ -13,7 +13,6 @@ import java.net.URI;
 import static org.example.StayLoggedOut.roundTextFieldBorder;
 
 public class LoggedInChat {
-
 // Class to represent chat history
 class Chat {
     private String name;
@@ -117,7 +116,7 @@ class Chat {
 
 
     public  void showChatBot(){
-
+     //   processConversation();
 
         //creating the frame
         JFrame frame = new JFrame();
@@ -410,7 +409,7 @@ class Chat {
                 if(textEntryField.getText().trim().isEmpty()){
                     textEntryField.setText("Type a question...");
                     textEntryField.setForeground(Color.WHITE);
-                }
+                } else userText = textEntryField.getText().trim();
 
             }
         });
@@ -459,4 +458,11 @@ class Chat {
     Profile showProfile = new Profile();
     showProfile.showProfile();
     }
+
+    /////Backend////
+    public  void processConversation(){
+    Conversation talking = new Conversation();
+    talking.Conversation("When is event happening?");
+ //   talking.select_topic();
+    };
 }
