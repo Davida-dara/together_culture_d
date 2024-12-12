@@ -1,8 +1,10 @@
 package org.example;
 
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 public class Conversation {
@@ -79,7 +81,6 @@ public class Conversation {
         if (text.contains("when is")) {
             return locate_date();
         }
-
         return null;
     }
 
@@ -121,9 +122,19 @@ public class Conversation {
             return sqlErrorMessage();
         }
 
+        //get event name
+        String[] tempWrds = text.split("");
+        for (String ename: eventList) {
+            int index = Arrays.binarySearch(tempWrds, ename);
+        }
+     /*   for (int i = 0; i < eventList.length; i++) {
+         if (text.contains(eventList[i])) {
+             event_name = eventList[i];
+         }
+        } */
 
         query2 = "SELECT event_name, date_of_event  FROM events WHERE event_name = \"" + event_name + "\";";
-        System.out.println(query2);
+      //  System.out.println(query2);
         ResultSet result2 = TGCDB.ExecuteQuery(query2);
         try {
             while (result2.next()) {
