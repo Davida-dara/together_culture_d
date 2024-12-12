@@ -1,5 +1,6 @@
 package org.example;
 
+import java.io.IOException;
 import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +18,7 @@ public class Conversation {
     private final static int MEMBERS = 3;
     private connection TGCDB;
     private static ArrayList<String> words = new ArrayList<String>();
-    public static String[] topics = {"bookings", "events", "memberships", "members"};
+    public static String[] topics = {"bookings", "events", "memberships", "members", "workspaces"};
 
 
     public void Conversation(String text) {
@@ -27,6 +28,7 @@ public class Conversation {
         TGCDB.getConnected();
         //  TGCDB.getDisconnected();
 
+        //text stores the user's input as a lowercase String
         this.text = text.toLowerCase();
         populate_array_list();
         chatbot_logic();
@@ -39,19 +41,24 @@ public class Conversation {
     }
 
     //populate the arraylist created with a list of all the words in the user's sentence
+
     public void populate_array_list() {
+        //splits the text input into individual words using spaces as delimiters
+
         String[] temp = text.split(" ");
         for (int i = 0; i < temp.length; i++) {
+            //adds these words to the words Array list
             words.add(temp[i]);
         }
     }
 
     public void chatbot_logic() {
-        //determine the text focus
+        //identifies the topic of discussion e.g. bookings , events etc..
         discussion = select_topic();
         //Case statement to determine the next course of action
         switch (discussion) {
             case "booking":
+                //searches for key words like "event" or "workspace" to refine the booking type
                 for (int m = 0; m < words.size(); m++) {
                     String tempWord = words.get(m).toLowerCase();
                     if (tempWord.contains("event")) {
@@ -62,11 +69,13 @@ public class Conversation {
                 }
                 break;
             case "events":
+                //calls the  chatbpt_event_rules method
                 System.out.println(chatbot_event_rules());
                 //event booking sql statements
                 break;
             case "memberships":
-                //memberships sql statements
+                //calls the memberships method
+                System.out.println(membership_rules());
                 break;
             case "members":
                 //members sql statements
@@ -75,9 +84,11 @@ public class Conversation {
     }
 
     public String chatbot_event_rules() {
+        //if the input contains "how many" it calls the how_many_events method
         if (text.contains("how many")) {
             return how_many_events();
         }
+        //if the input contains "when is" it calls locate_date()
         if (text.contains("when is")) {
             return locate_date();
         }
@@ -184,6 +195,155 @@ public class Conversation {
         }
         //  return null;
     }
+    public String membership_types_rules(){
+        //declaring the variables
+        String outPut, gettingMembershipsQuery, tempOut;
+        int rowCount = 0;
+        outPut = "we have different types of memberships at together culture, here is a list of the memberships that we have";
+        //query that will get the memberships in the database
+        gettingMembershipsQuery ="SELECT membership_type" +"FROM memberships";
+        ResultSet membershipTypeResult = TGCDB.ExecuteQuery(gettingMembershipsQuery);
+        while (true){
+            try{
+                while(membershipTypeResult.next()){
+                    rowCount++;
+                    tempOut = "";
+                    //loops through the content in a row and stores them into a String
+                    int loopCount = membershipTypeResult.getMetaData().getColumnCount();
+                    for(int i = 1; i <= loopCount; i++){
+                        if( i == 1){
+                            tempOut += membershipTypeResult.getString(i) + "available";
+                        }else tempOut += membershipTypeResult.getString(i);
+                    }
+                    //2nd output response
+                    outPut += "\n" + tempOut;
+                }
+                //3rd output response
+                outPut += "\n There are " + rowCount + " memberships. Do let me know if you want to know the prices";
+                return outPut;
+
+            } catch(SQLException e){
+                //display the error messaged
+                return sqlErrorMessage();
+            }
+        }
+
+    }
+
+    public String membership_prices(){
+        String outPut, gettingmembershipPriceQuery, tempOut;
+        int rowCounter = 0;
+        outPut = "Different memberships have different prices, here is a list of the membership prices:";
+        //query that will get the membership_type name and the prices
+        gettingmembershipPriceQuery = "SELECT membership_type, price_per_month"+"FROM memberships";
+        ResultSet membershipPricesResult = TGCDB.ExecuteQuery(gettingmembershipPriceQuery);
+        while(true){
+            try{
+                while(membershipPricesResult.next()){
+                    rowCounter++;
+                    tempOut = "";
+                    //loops through the content in a row and stored them into a string
+                    int loopCount = membershipPricesResult.getMetaData().getColumnCount();
+                    for(int i = 1; i <= loopCount; i++){
+                        if( i == 1){
+                            tempOut += membershipPricesResult.getString(i) + "GBP";
+                        }else tempOut += membershipPricesResult.getString(i);
+                    }
+                    //2nd output response
+                    outPut += "\n"+ tempOut;
+
+                }
+
+                //3rd output
+                outPut +="\n Some membership types do not have a price, this is for the user to choose the amount they want to pay" ;
+                return outPut;
+
+            }catch(SQLException e){
+                //display the sql error message
+                return sqlErrorMessage();
+            }
+
+        }
+    }
+    public String free_memberships(){
+        String outPut, gettingFreeMembershipsQuery, tempOut;
+        int rowCounter = 0;
+        outPut = "These are the membership types that dont have a set subscription price:";
+        //query that will get the data needed from the database
+        gettingFreeMembershipsQuery = "SELECT membership_type, price_per_month FROM memberships WHERE price_per_month IS NULL";
+        ResultSet freeMembershipsResults = TGCDB.ExecuteQuery(gettingFreeMembershipsQuery);
+        while(true){
+            try{
+                while(freeMembershipsResults.next()) {
+
+
+                    rowCounter++;
+                    tempOut = "";
+                    //looping through the content in a row and store them into a string
+                    int loopCount = freeMembershipsResults.getMetaData().getColumnCount();
+                    for (int i = 1; i <= loopCount; i++) {
+                        if (i == 1) {
+                            tempOut += freeMembershipsResults.getString(i) + "GBP";
+                        } else tempOut += freeMembershipsResults.getString(i);
+                    }
+                    //2nd output response
+                    outPut += "\n" + tempOut;
+                }
+                //3rd response
+                return outPut;
+
+
+            }catch(SQLException e){
+                return sqlErrorMessage();
+            }
+        }
+
+    }
+    public String become_member(){
+        String websiteURL = "https://www.togetherculture.com/about-our-membership";
+        return "To become a Together Culture member, please visit our website by clicking the following link"
+                + websiteURL;
+
+    }
+
+    public String membership_rules(){
+        if(text.contains("membership types")){
+            //calls the related method into
+            System.out.println(membership_types_rules());
+
+        }
+        if(text.contains("membership prices")){
+            System.out.print(membership_prices());
+
+        }
+        if(text.contains("become member")){
+            System.out.println(become_member());
+
+        }
+        if(text.contains("show free memberships")){
+            System.out.println(free_memberships());
+        }
+        if(text.contains("What memberships are free")){
+            System.out.println(free_memberships());
+        }
+        return general_response();
+
+    }
+
+    public String member_info_rule(){
+        String websiteURL = "https://www.togetherculture.com/blog";
+        return "To find out more about the people in our community, please follow the following link" + websiteURL;
+    }
+     public String accessing_member_info (){
+        if(text.contains("how many members")){
+            System.out.println(member_info_rule());
+        }
+        if(text.contains("who are the members")){
+            System.out.println(member_info_rule());
+        }
+        return general_response();
+     }
+
 
     public String sqlErrorMessage() {
         return "Sorry there was an error loading your response, could you retype your question?";

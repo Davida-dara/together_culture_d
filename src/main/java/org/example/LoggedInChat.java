@@ -13,7 +13,9 @@ import java.net.URI;
 import static org.example.StayLoggedOut.roundTextFieldBorder;
 
 public class LoggedInChat {
-// Class to represent chat history
+    private String userText = "";
+
+    // Class to represent chat history
 class Chat {
     private String name;
     private int id;
