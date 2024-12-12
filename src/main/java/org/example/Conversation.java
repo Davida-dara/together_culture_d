@@ -19,12 +19,12 @@ public class Conversation {
     private final static int MEMBERS = 3;
     private connection TGCDB;
     private static ArrayList<String> words = new ArrayList<String>();
-<<<<<<< Updated upstream
+    /*<<<<<<< Updated upstream
+        public static String[] topics = {"bookings", "events", "memberships", "members", "workspaces"};
+    ======= */
     public static String[] topics = {"bookings", "events", "memberships", "members", "workspaces"};
-=======
-    public static String[] topics = {"bookings", "events", "memberships", "members"};
     private static ArrayList<String> availableRooms = new ArrayList<>();
->>>>>>> Stashed changes
+//>>>>>>> Stashed changes
 
 
     public void Conversation(String text) {
@@ -113,17 +113,17 @@ public class Conversation {
                 //members sql statements
                 break;
             default: {
-                 System.out.println("No topic of discussion was not found, please re-enter you question ");
-                 break;
-               //  return resultingOutput;
+                System.out.println("No topic of discussion was not found, please re-enter you question ");
+                break;
+                //  return resultingOutput;
             }
         }
     }
     public String converse(String question) {
         //get input string
 
-        String response = LoggedInChat.getTextFromTextfield(); //CHANGE FOR stay signedout chat;
-       // if (response.contains())
+        //  String response = LoggedInChat.getTextFromTextfield(); //CHANGE FOR stay signedout chat;
+        // if (response.contains())
         return null;
     }
 
@@ -147,7 +147,7 @@ public class Conversation {
             //ask duration of booking (max=4 hours)
             //create room booking
             //update wrokspace table
-           // converse(chatbotQuestion);
+            // converse(chatbotQuestion);
         }
     }
     public String book_event() {
@@ -171,7 +171,7 @@ public class Conversation {
         String query1, query2, query3;
         int rowCount = 0;
         //get the event name
-       // String event_name = "Tech talks";
+        // String event_name = "Tech talks";
 
 
         //get the total number of events in the table
@@ -179,12 +179,12 @@ public class Conversation {
         ResultSet result1 = TGCDB.ExecuteQuery(query1);
         try {
             while (result1.next()) {
-            rowCount = Integer.parseInt(result1.getString("events_count"));
+                rowCount = Integer.parseInt(result1.getString("events_count"));
             }
             System.out.println(rowCount);
         } catch (SQLException e) {
-           // ..//  throw Exception (e);
-               return sqlErrorMessage();
+            // ..//  throw Exception (e);
+            return sqlErrorMessage();
         }
 
         //Create an array storing the list of events in the table
@@ -207,9 +207,9 @@ public class Conversation {
 
         //get event name
         String event_name = "";
-      //  String[] tempWrds = text.split("");
+        //  String[] tempWrds = text.split("");
         for (String ename: eventList) {
-               if (text.contains(ename)) {
+            if (text.contains(ename)) {
                 event_name = ename;
             }
         }
@@ -221,7 +221,7 @@ public class Conversation {
         } */
 
         query2 = "SELECT event_name, date_of_event  FROM events WHERE event_name = \"" + event_name + "\";";
-      //  System.out.println(query2);
+        //  System.out.println(query2);
         ResultSet result2 = TGCDB.ExecuteQuery(query2);
         try {
             while (result2.next()) {
@@ -271,7 +271,6 @@ public class Conversation {
         }
         //  return null;
     }
-    //changes
     public String membership_types_rules(){
         //declaring the variables
         String outPut, gettingMembershipsQuery, tempOut;
@@ -411,7 +410,7 @@ public class Conversation {
         String websiteURL = "https://www.togetherculture.com/blog";
         return "To find out more about the people in our community, please follow the following link" + websiteURL;
     }
-     public String accessing_member_info (){
+    public String accessing_member_info (){
         if(text.contains("how many members")){
             System.out.println(member_info_rule());
         }
@@ -419,13 +418,12 @@ public class Conversation {
             System.out.println(member_info_rule());
         }
         return general_response();
-     }
+    }
 
 
     public String sqlErrorMessage() {
         return "Sorry there was an error loading your response, could you retype your question?";
     }
-
 
     //method to determine the topic of discussion /focus
     public String select_topic() {
@@ -442,10 +440,9 @@ public class Conversation {
                 }
             }
         }
-    //    System.out.println(focus);
+        //    System.out.println(focus);
         return null;
     }
-
 
     public String general_response() { //general response for when the chatbot does not understand a user's question
         return "I'm not quite sure what you mean? can you rephrase your question.";

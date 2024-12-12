@@ -13,18 +13,19 @@ import java.net.URI;
 import static org.example.StayLoggedOut.roundTextFieldBorder;
 
 public class LoggedInChat {
-<<<<<<< Updated upstream
+    //<<<<<<< Updated upstream
     private String userText = "";
 
     // Class to represent chat history
-class Chat {
-    private String name;
-    private int id;
-=======
-    public static org.example.RoundedTextField textEntryField = new org.example.RoundedTextField(40, 20);
+    //   class Chat {
+    //       private String name;
+    public org.example.RoundedTextField textEntryField = new org.example.RoundedTextField(40, 20);
+    //      private int id;
+    //=======
+
     // Class to represent chat history
-    private static String userText = "";
->>>>>>> Stashed changes
+    //   private String userText = "";
+//>>>>>>> Stashed changes
 
     class Chat {
         private String name;
@@ -480,10 +481,10 @@ class Chat {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
 
-    //    processConversation();
+        //    processConversation();
     }
 
-    public static void retrieveInfromation() {
+    public  void retrieveInfromation() {
         String input;
         textEntryField.addActionListener(new ActionListener() {
             @Override
@@ -503,7 +504,7 @@ class Chat {
     }
 
     /////Backend////
-    public static String getTextFromTextfield() {
+    public  String getTextFromTextfield() {
         return userText;
     }
 
@@ -511,10 +512,11 @@ class Chat {
         System.out.println(userText);
         Conversation talking = new Conversation();
         System.out.println(userText);
-         talking.Conversation(userText);
-  //      talking.Conversation("When is Tech talks event happening?");
+        talking.Conversation(userText);
+        //      talking.Conversation("When is Tech talks event happening?");
         //   talking.select_topic();
     }
-
-    ;
 }
+
+
+//};
