@@ -195,6 +195,7 @@ public class Conversation {
         }
         //  return null;
     }
+    //changes
     public String membership_types_rules(){
         //declaring the variables
         String outPut, gettingMembershipsQuery, tempOut;
