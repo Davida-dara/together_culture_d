@@ -13,8 +13,8 @@ public class connection {
     //database Initializiation
     public  connection () {
         this.dbUrl = "jdbc:mysql://localhost:3306/together_culture";
-        this.adminName = "tgcadmin";
-        this.adminPass = "1234tgc";
+        this.adminName = "root";
+        this.adminPass = "";
     }
 
     public boolean getConnected() {
