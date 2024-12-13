@@ -33,12 +33,13 @@ public class connection {
     }
 
     //method to Update/ edit the sql database sql commands
-    public void updateSql(String statement) {
+    public boolean updateSql(String statement) {
         try {
             Statement sqlStat = this.db.createStatement();
             sqlStat.executeUpdate(statement); //update the database with commands like CREATE, ALTER etc
+            return true;
         }catch (Exception e) {
-            System.out.println("Could not execute sql command");
+            return false;
         }
     }
 
