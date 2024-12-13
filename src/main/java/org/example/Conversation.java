@@ -46,6 +46,7 @@ public class Conversation {
 
     }
 
+
     //populate the arraylist created with a list of all the words in the user's sentence
 
     public void populate_array_list() {
@@ -111,6 +112,7 @@ public class Conversation {
                 break;
             case "members":
                 //members sql statements
+                System.out.println(member_info_rule());
                 break;
             default: {
                 System.out.println("No topic of discussion was not found, please re-enter you question ");
