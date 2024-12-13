@@ -16,6 +16,7 @@ public class LoggedInChat {
     //<<<<<<< Updated upstream
     private JTextField userInputField;
     private String userText = "";
+    private  int userId;
 
     // Class to represent chat history
     //   class Chat {
@@ -28,13 +29,13 @@ public class LoggedInChat {
     //   private String userText = "";
 //>>>>>>> Stashed changes
 
-    class Chat {
+    class ChatHistory{
         private String name;
-        private int id;
+        private int chatId;
 
-        public Chat(String name, int id) {
+        public ChatHistory(String name, int chatId) {
             this.name = name;
-            this.id = id;
+            this.chatId = chatId;
         }
 
         public String getName() {
@@ -42,7 +43,8 @@ public class LoggedInChat {
         }
 
         public int getId() {
-            return id;
+            userId = 1;
+            return userId;
         }
 
         @Override
@@ -216,12 +218,12 @@ public class LoggedInChat {
         mainPanel.add(profileButtonContainer, BorderLayout.EAST);
 
         // Chat History Dropdown
-        Chat[] chatHistoryOptions = {
-                new Chat("Previous Chats", -1),
-                new Chat("Chat 1", 1),
-                new Chat("Chat 2", 2)
+        ChatHistory[] chatHistoryOptions = {
+                new ChatHistory("Previous Chats", -1),
+                new ChatHistory("Chat 1", 1),
+                new ChatHistory("Chat 2", 2)
         };
-        JComboBox<Chat> chatHistoryDropdown = new JComboBox<>(chatHistoryOptions);
+        JComboBox<ChatHistory> chatHistoryDropdown = new JComboBox<>(chatHistoryOptions);
         // Apply custom renderer
         chatHistoryDropdown.setRenderer(new CustomComboBoxRenderer());
 
@@ -232,7 +234,7 @@ public class LoggedInChat {
         chatHistoryDropdown.setFont(new Font("Arial", Font.PLAIN, 18));
         chatHistoryDropdown.setFocusable(false);
         chatHistoryDropdown.addActionListener(e -> {
-            Chat selectedChat = (Chat) chatHistoryDropdown.getSelectedItem();
+            ChatHistory selectedChat = (ChatHistory) chatHistoryDropdown.getSelectedItem();
             if (selectedChat != null && selectedChat.getId() != -1) {
                 JOptionPane.showMessageDialog(
                         frame,
@@ -459,7 +461,7 @@ public class LoggedInChat {
         //    processConversation();
     }
 
-    public  void retrieveInfromation() {
+  /*  public  void retrieveInfromation() {
         String input;
         textEntryField.addActionListener(new ActionListener() {
             @Override
@@ -471,7 +473,7 @@ public class LoggedInChat {
             }
         });
 //return userText;
-    }
+    }*/
 
     public static void openProfileGUI() {
         Profile showProfile = new Profile();
@@ -483,11 +485,15 @@ public class LoggedInChat {
         return userText;
     }
 
+    public int getUserID() {
+        return userId;
+    }
+
     public void processConversation() {
         System.out.println(userText);
         Conversation talking = new Conversation();
         System.out.println(userText);
-        talking.Conversation(userText);
+        talking.Conversation(userText, getUserID());
         //      talking.Conversation("When is Tech talks event happening?");
         //   talking.select_topic();
     }
